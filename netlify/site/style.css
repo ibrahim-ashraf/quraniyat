@@ -1,0 +1,157 @@
+body {
+    font-family: sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+    color: #333;
+    background-color: #fff;
+  }
+  
+  h1 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 0;
+  }
+  
+  h2 {
+    font-size: 18px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  p {
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+  
+  ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  li {
+    margin-bottom: 10px;
+  }
+  
+  a {
+    color: #000;
+    text-decoration: none;
+    display: inline;
+  }
+  
+  a:hover {
+    color: #fff;
+    background-color: #000;
+  }
+  
+  .hero {
+    background-image: url(images/hero.jpg);
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .hero h2 {
+    font-size: 36px;
+    font-weight: bold;
+    color: #fff;
+    margin-top: 0;
+  }
+  
+  .hero p {
+    font-size: 18px;
+    color: #fff;
+    margin-top: 10px;
+  }
+  
+  .hero a {
+    display: block;
+    margin-top: 20px;
+    background-color: #000;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+  
+  .features {
+    margin-top: 20px;
+  }
+  
+  .features h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 0;
+  }
+  
+  .features ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .features li {
+    margin-bottom: 10px;
+  }
+  
+  .testimonials {
+    margin-top: 20px;
+  }
+  
+  .testimonials h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 0;
+  }
+  
+  .testimonials blockquote {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+  }
+  
+  .testimonials cite {
+    font-size: 14px;
+    color: #999;
+    display: block;
+    margin-top: 5px;
+  }
+  
+  .call-to-action {
+    margin-top: 20px;
+  }
+  
+  .call-to-action h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-top: 0;
+  }
+  
+  .call-to-action p {
+    font-size: 18px;
+    color: #fff;
+    margin-top: 10px;
+  }
+  
+  .call-to-action a {
+    display: block;
+    margin-top: 20px;
+    background-color: #000;
+    color: #fff;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-decoration: none;
+  }
+
+#other-country {
+  display: none;
+}
+
