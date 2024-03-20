@@ -15,9 +15,8 @@
                 <li><a href="contact.html">اتصل بنا</a></li>
             </ul>
         </nav>
-        <p>التاريخ والوقت: <span id="date_time"></span></p>
         <h1>منصة قرآنيات لتعليم الآيات</h1>
-        <p>من الحفظ إلى الإتقان</p>
+        <p>قال تعالى: "ولقد يسرنا القرآن للذكر فهل من مدكر" (القمر: 17)</p>
     </header>
     <main>
         <section class="introduction">
@@ -50,21 +49,5 @@
     <footer>
         <p>&copy; 2024 منصة قرآنيات لتعليم الآيات. كافة الحقوق محفوظة.</p>
     </footer>
-    <script>
-    function displayDateAndTime() {
-        const d = new Date();
-        const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
-        const months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
-        let dddd = days[d.getDay()];
-        let dd = d.getDate()
-        let mmmm = months[d.getMonth()];
-        let yyyy = d.getFullYear();
-        let date = dddd + "، " + dd + " " + mmmm + " " + yyyy;
-        let time = d.toLocaleTimeString()
-      document.getElementById("date_time").innerHTML = date + "، " + time;
-    }
-
-    setInterval(displayDateAndTime, 1000);
-    </script>
 </body>
 </html>

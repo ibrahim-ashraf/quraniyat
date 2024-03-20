@@ -44,3 +44,18 @@ var nationalIdInput = document.getElementById("national_id");
     nationalIdInput.placeholder = "رقم بطاقة الهوية الوطنية";
   }
 }
+
+function displayDateAndTime() {
+  const d = new Date();
+  const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
+  const months = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+  let dddd = days[d.getDay()];
+  let dd = d.getDate()
+  let mmmm = months[d.getMonth()];
+  let yyyy = d.getFullYear();
+  let date = dddd + "، " + dd + " " + mmmm + " " + yyyy;
+  let time = d.toLocaleTimeString()
+document.getElementById("date_time").innerHTML = date + "، " + time;
+}
+
+setInterval(displayDateAndTime, 1000);
