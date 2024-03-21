@@ -4,14 +4,22 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>الرئيسية - منصة قرآنيات لتعليم الآيات، من الحفظ إلى الإتقان</title>
+    <meta name="description" content="منصة قرآنيات هي منصة تعليمية متخصصة في تعليم القرآن الكريم والتجويد والقراءات بطريقة احترافية ومتميزة تحت إشراف معلمين مؤهلين.">
+    <meta name="keywords" content="قرآن, تجويد, قراءات, حفظ القرآن, تعليم القرآن, إتقان التلاوة, منصة قرآنيات, منصة تعليمية قرآنية">
+    <meta name="author" content="Ibrahim Ashraf Abdo">
+    <meta property="og:title" content="منصة قرآنيات لتعليم الآيات">
+    <meta property="og:description" content="منصة قرآنيات هي منصة تعليمية متخصصة في تعليم القرآن الكريم والتجويد والقراءات بطريقة احترافية ومتميزة تحت إشراف معلمين مؤهلين.">
+
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <nav>
+        <button id="toggle_nav_btn" aria-controls="nav" aria-expanded="false" aria-label="فتح قائمة التنقل">فتح قائمة التنقل</button>
+        <nav id="nav" style="display: none;">
             <ul>
                 <li><a href="index.html">الرئيسية</a></li>
                 <li><a href="register.html" title="سجل بياناتك وسنتواصل معك في أقرب وقت">التسجيل</a></li>
+                <li><a href="faq.html">الأسئلة الشائعة</a></li>
                 <li><a href="contact.html">اتصل بنا</a></li>
             </ul>
         </nav>
@@ -49,5 +57,7 @@
     <footer>
         <p>&copy; 2024 منصة قرآنيات لتعليم الآيات. كافة الحقوق محفوظة.</p>
     </footer>
+
+    <script src="toggle-nav.js"></script>
 </body>
 </html>
