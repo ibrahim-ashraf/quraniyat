@@ -1,18 +1,15 @@
-const pageTitle = document.title;
+const pageTitle = encodeURIComponent(document.title);
 const pageUrl = encodeURIComponent(window.location.href);
-const shareText = `${pageTitle}: ${pageUrl}`;
+const shareText = `${pageTitle}${encodeURIComponent(": ")}${pageUrl}`;
 
-function shareOnFacebook() {
-    const fbShareUrl = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}&quote=${shareText}`;
-    window.open(fbShareUrl, 'facebook-share-dialog', 'width=626,height=436');
-}
+whatsapp = document.getElementById("whatsapp");
+telegram = document.getElementById("telegram");
+facebook = document.getElementById("facebook");
+twitter = document.getElementById("twitter");
+email = document.getElementById("email");
 
-function shareOnTwitter() {
-    const twitterShareUrl = `https://twitter.com/intent/tweet?text=${shareText}`;
-    window.open(twitterShareUrl, 'twitter-share-dialog', 'width=626,height=436');
-}
-
-function shareOnWhatsApp() {
-    const whatsappShareUrl = `https://wa.me/?text=${shareText}`;
-    window.open(whatsappShareUrl, 'whatsapp-share-dialog', 'width=626,height=436');
-}
+whatsapp.href = `whatsapp://send?text=${shareText}`;
+telegram.href = `https://t.me/share/url?url=${pageUrl}&text=${shareText}`
+facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`
+twitter.href = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${shareText}`
+email.href = `mailto:?subject=${pageTitle}&amp;body=${pageUrl}`
