@@ -8,8 +8,8 @@ facebook = document.getElementById("facebook");
 twitter = document.getElementById("twitter");
 email = document.getElementById("email");
 
-whatsapp.href = `whatsapp://send?text=${shareText}`;
+whatsapp.href = `https://wa.me/?text=${shareText}`;
 telegram.href = `https://t.me/share/url?url=${pageUrl}&text=${shareText}`
-facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}`
-twitter.href = `https://twitter.com/intent/tweet?url=${pageUrl}&text=${shareText}`
-email.href = `mailto:?subject=${pageTitle}&amp;body=${pageUrl}`
+facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}&quote=${shareText}`
+twitter.href = `https://twitter.com/intent/tweet?text=${shareText}`
+email.href = `mailto:?subject=${pageTitle}&body=${pageUrl}`
