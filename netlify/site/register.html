@@ -32,7 +32,8 @@
                 <option value="ذكر">ذكر</option>
                 <option value="أنثى">أنثى</option>
             </select><br>
-            <label for="birth_date">حدد تاريخ ميلادك (يجب أن يكون بين <span id="birth_date_min"></span> وـ <span id="birth_date_max"></span>)</label>
+            <label for="birth_date">حدد تاريخ ميلادك</label>
+            <p id="birth_date_note"></p>
             <input type="date" name="birth-date" id="birth_date"required><br>
             <h3>معلومات العنوان</h3>
             <label for="country">اختر دولتك</label>
@@ -144,7 +145,7 @@
             <h2>التحقق من أنك إنسان</h2>
             <p>يساعدنا ذلك في حمايتنا من الطلبات العشوائية وغير المرغوب فيها.</p>
             <h3>إعادة إدخال رمز التحدي العشوائي المكون من 4/6 أرقام</h3>
-            <p>لقد أنشأنا رمزا عشوائيا مكونا من <span id="challenge_code_numbers"></span> أرقام (<span id="challenge_code"></span>). أعد إدخاله أدناه. ملاحظة: سيتم إرسال الرمز التي أنشأناه بالإضافة إلى الرمز الذي تقوم بإدخاله.</p>
+            <p id="challenge_code_info"></p>
             <input type="hidden" name="challenge-code-hidden" id="challenge_code_hidden">
             <input type="number" name="challenge-code-edit" id="challenge_code_edit" placeholder="أعد إدخال رمز التحدي" required><br>
             <h3>التحقق عن طريق reCAPTCHA</h3>
@@ -163,8 +164,17 @@
     <script src="script.js"></script>
     <script>
         window.onload = function() {
-            setBirthDate();
-            createChallengeCode();
+            const date = setBirthDateRange();
+            const minDate = date.minDate;
+            const maxDate = date.maxDate;
+
+            document.getElementById("birth_date_note").textContent = `ملاحظة هامة: يجب أن يكون تاريخ ميلادك بين ${minDate} وـ ${maxDate}، مما يعني أن عمرك يجب أن يتراوح بين 18/30 عاما في تاريخ التسجيل.`;
+
+            const challengeCodeInfo = createChallengeCode();
+            const challengeCodeNumbers = challengeCodeInfo.challengeCodeNumbers;
+            const challengeCode = challengeCodeInfo.challengeCode;
+
+            document.getElementById("challenge_code_info").textContent = `لقد أنشأنا رمزا عشوائيا مكونا من ${challengeCodeNumbers} أرقام. هو: ${challengeCode}. يرجى إعادة إدخاله أدناه. ملاحظة هامة: لا يقوم النظام بالتحقق من تطابق الرمز الذي تعيد إدخاله مع الرمز الذي أنشأناه، ولكننا سنتحقق منه لاحقا. لذا، يرجى التحقق من التطابق قبل الإرسال.`
         };
     </script>
 </body>

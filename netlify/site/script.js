@@ -1,14 +1,16 @@
 const dateTime = new Date();
 
-function setBirthDate() {
+function setBirthDateRange() {
     const maxDate = new Date(dateTime.getFullYear() - 18, dateTime.getMonth(), dateTime.getDate() + 1 ).toISOString().split("T")[0];
     const minDate = new Date(dateTime.getFullYear() - 30, dateTime.getMonth(), dateTime.getDate() + 1).toISOString().split("T")[0];
 
     document.getElementById("birth_date").max = maxDate;
     document.getElementById("birth_date").min = minDate;
 
-    document.getElementById("birth_date_min").textContent = maxDate;
-    document.getElementById("birth_date_max").textContent = minDate;
+    return {
+        minDate: minDate,
+        maxDate: maxDate
+    };
 }
 
 function createChallengeCode() {
@@ -19,11 +21,12 @@ function createChallengeCode() {
         challengeCode += Math.floor(Math.random() * 10);
     }
 
-    document.getElementById("challenge_code_numbers").textContent = challengeCodeNumbers;
-    document.getElementById("challenge_code").textContent = challengeCode;
     document.getElementById("challenge_code_hidden").value = challengeCode;
 
-    // localStorage.setItem("registrationNumber", registrationNumber);
+    return {
+        challengeCode: challengeCode,
+        challengeCodeNumbers: challengeCodeNumbers
+    };
 }
 
 function showOtherCountryInput() {
