@@ -1,27 +1,41 @@
 <!DOCTYPE html>
 <html lang="ar">
 <head>
-    <title>تسجيل البيانات</title>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>التسجيل - منصة قرآنيات لتعليم الآيات</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <header>
-        <h1>تسجيل البيانات</h1>
+        <button id="toggle_nav_btn" aria-controls="nav" aria-expanded="false" aria-label="فتح قائمة التنقل">فتح قائمة التنقل</button>
+        <nav id="nav" style="display: none;">
+            <ul>
+                <li><a href="index.html">الرئيسية</a></li>
+                <li><a href="register.html" title="سجل بياناتك وسنتواصل معك في أقرب وقت">التسجيل</a></li>
+                <li><a href="faq.html">الأسئلة الشائعة</a></li>
+                <li><a href="contact.html">اتصل بنا</a></li>
+            </ul>
+        </nav>
+        <h1>التسجيل - منصة قرآنيات لتعليم الآيات</h1>
     </header>
     <main>
         <p>
-            مرحبا بكم في صفحة التسجيل الإلكتروني الخاصة بـ Quran Servants. يرجى ملء هذا النموذج، والتأكد من صحة البيانات قبل إرسال النموذج.<br> نوصي بشدة بمراجعة <a href="privacy-policy.html">سياسة الخصوصية الخاصة بنا</a>؛ للتعرف على آلية تعاملنا مع بياناتك.
+            مرحبا بكم في صفحة التسجيل الإلكتروني الخاصة بمنصة قرآنيات لتعليم الآيات. يرجى ملء هذا النموذج، والتأكد من صحة البيانات قبل الإرسال.<br> إذا كان لديك مخاوف من تعاملنا مع بياناتك، فنوصي بشدة بمراجعة <a href="privacy-policy.html">سياسة الخصوصية الخاصة بنا</a> قبل متابعة التسجيل.
         </p>
-        <form name="register" action="registration-success.html" method="post" data-netlify="true">
+        <h2>تسجيل البيانات</h2>
+        <form name="register" action="registration-success.html" method="post" data-netlify="true" data-netlify-recaptcha="true">
+            <h3>المعلومات الشخصية</h3>
             <input type="text" name="name" placeholder="أدخل اسمك الكامل" required><br>
-            <label for="gender">اختر جنسك</div></label>
-            <select name="gender" id="gender">
-                <option value="Male">ذكر</option>
-                <option value="Female">أنثى</option>
+            <label for="gender">اختر جنسك</label>
+            <select name="gender" id="gender" required>
+                <option value="ذكر">ذكر</option>
+                <option value="أنثى">أنثى</option>
             </select><br>
-            <label for="country">اختر دولتك</label><br>
+            <label for="birth_date">حدد تاريخ ميلادك (يجب أن يكون بين <span id="birth_date_min"></span> وـ <span id="birth_date_max"></span>)</label>
+            <input type="date" name="birth-date" id="birth_date"required><br>
+            <h3>معلومات العنوان</h3>
+            <label for="country">اختر دولتك</label>
             <select name="country" id="country" onchange="showOtherCountryInput()" required>
                 <option value="أذربيجان">أذربيجان</option>
                 <option value="أرمينيا">أرمينيا</option>
@@ -119,25 +133,28 @@
                 <option value="هولندا">هولندا</option>
                 <option value="أخرى">أخرى</option>
             </select><br>
-            <input type="text" name="other-country" id="other_country" style="display: none;" placeholder="أدخل دولتك">
-            <input type="number" name="national-id" id="national_id" placeholder="أدخل رقمك القومي" required><br>
-            <label for="birthday">حدد تاريخ ميلادك</label>
-            <input type="date" name="birthday" id="birthday" required><br>
-            <input type="text" name="address" id="address" placeholder="أدخل عنوانك (قرية، مدينة، محافظة)" required><br>
+            <input type="text" name="other-country" id="other_country" style="display: none;" placeholder="أدخل اسم دولتك">
+            <input type="text" name="state" id="state" placeholder="الولاية/المقاطعة/المحافظة" required><br>
+            <input type="text" id="city" name="city" placeholder="المدينة/البلدة/القرية" required><br>
+            <input type="text" id="area" name="area" placeholder="الحي/المنطقة/القرية" required><br>
+            <input type="text" id="zipcode" name="zipcode" placeholder="الرمز البريدي" required><br>
+            <h3>معلومات الاتصال</h3>
             <input type="tel" name="phone" placeholder="أدخل رقم هاتفك بالتنسيق الدولي (مثال: +201234567890)" required><br>
             <input type="email" name="email" placeholder="أدخل بريدك الإلكتروني" required><br>
-            <p>
-                رمز التحقق
-            </p>
-            <input type="number" name="verification-code" id="verification_code" readonly><br>
-            <input type="number" name="entered-verification-code" id="entered_verification_code" placeholder="أعد إدخال رمز التحقق" required><br>
-            <label for="agree_recording_data">أقر أن صحة ودقة بياناتي الواردة في هذا النموذج على مسؤوليتي الشخصية، كما أوافق على تسجيل بياناتي والتعامل معها بما يتوافق مع سياسة الخصوصية.</label>
-            <input type="checkbox" name="agree_recording_data" id="agree_recording_data" value="agree_recording_data" required><br>
-            <p>
-                بالنقر على "تسجيل"، فإنك توافق على تسجيل بياناتك لدينا والتعامل معها بما يتوافق مع سياسة الخصوصية الخاصة بنا. قبل المتابعة، نوصي بشدة بالاطلاع على<br>
-                <a href="privacy-policy.html">سياسة الخصوصية الخاصة بنا</a>
-            </p>
-            <input type="submit" id="submit" value="تسجيل">
+            <h2>التحقق من أنك إنسان</h2>
+            <p>يساعدنا ذلك في حمايتنا من الطلبات العشوائية وغير المرغوب فيها.</p>
+            <h3>إعادة إدخال رمز التحدي العشوائي المكون من 4/6 أرقام</h3>
+            <p>لقد أنشأنا رمزا عشوائيا مكونا من <span id="challenge_code_numbers"></span> أرقام (<span id="challenge_code"></span>). أعد إدخاله أدناه. ملاحظة: سيتم إرسال الرمز التي أنشأناه بالإضافة إلى الرمز الذي تقوم بإدخاله.</p>
+            <input type="hidden" name="challenge-code-hidden" id="challenge_code_hidden">
+            <input type="number" name="challenge-code-edit" id="challenge_code_edit" placeholder="أعد إدخال رمز التحدي" required><br>
+            <h3>التحقق عن طريق reCAPTCHA</h3>
+            <p>يرجى تحديد مربع reCAPTCHA أدناه؛ للتأكد من أنك إنسان.</p>
+            <div data-netlify-recaptcha="true"></div>
+            <h2>إبداء الموافقة</h2>
+            <p>يرجى الموافقة على أن صحة ودقة بياناتك الواردة في هذا النموذج على مسؤوليتك الشخصية، والموافقة على تسجيل بياناتك والتعامل معها بما يتوافق مع <a href="privacy-policy.html">سياسة الخصوصية الخاصة بنا</a>.</p>
+            <label for="agree">أوافق</label>
+            <input type="checkbox" name="agree" id="agree" value="agree" required><br>
+            <input type="submit" id="submit" value="إرسال">
         </form>
     </main>
     <footer>
@@ -146,10 +163,9 @@
     <script src="script.js"></script>
     <script>
         window.onload = function() {
-    displaySelectedGender();
-    displaySelectedCountry();
-    showOtherCountryInput();
-  };
+            setBirthDate();
+            createChallengeCode();
+        };
     </script>
 </body>
 </html>
