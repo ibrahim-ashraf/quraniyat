@@ -8,7 +8,7 @@
 </head>
 <body>
     <header>
-        <button id="toggle_nav_btn" aria-controls="nav" aria-expanded="false" aria-label="فتح قائمة التنقل">فتح قائمة التنقل</button>
+        <button id="toggle_nav_btn" onclick="toggleNavigationMenu()" aria-controls="nav" aria-expanded="false" aria-label="فتح قائمة التنقل">فتح قائمة التنقل</button>
         <nav id="nav" style="display: none;">
             <ul>
                 <li><a href="index.html">الرئيسية</a></li>
@@ -159,9 +159,18 @@
         </form>
     </main>
     <footer>
-        <p>&copy; 2023 Quran Servants. جميع الحقوق محفوظة.</p>
+        <h2>مشاركة الصفحة</h2>
+        <ul>
+            <li><a href="" id="whatsapp">واتساب</a></li>
+            <li><a href="" id="telegram">تيليجرام</a></li>
+            <li><a href="" id="facebook">فيسبوك</a></li>
+            <li><a href="" id="twitter">تويتر</a></li>
+            <li><a href="" id="email">البريد الإلكتروني</a></li>
+        </ul>
+        <p>&copy; 2024 منصة قرآنيات لتعليم الآيات. كافة الحقوق محفوظة.</p>
     </footer>
     <script src="script.js"></script>
+
     <script>
         window.onload = function() {
             const date = setBirthDateRange();
@@ -175,7 +184,10 @@
             const challengeCode = challengeCodeInfo.challengeCode;
 
             document.getElementById("challenge_code_info").textContent = `لقد أنشأنا رمزا عشوائيا مكونا من ${challengeCodeNumbers} أرقام. هو: ${challengeCode}. يرجى إعادة إدخاله أدناه. ملاحظة هامة: لا يقوم النظام بالتحقق من تطابق الرمز الذي تعيد إدخاله مع الرمز الذي أنشأناه، ولكننا سنتحقق منه لاحقا. لذا، يرجى التحقق من التطابق قبل الإرسال.`
+
+            sharePage();
         };
     </script>
+    
 </body>
 </html>

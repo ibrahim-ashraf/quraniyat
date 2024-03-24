@@ -1,5 +1,22 @@
 const dateTime = new Date();
 
+function toggleNavigationMenu() {
+    const toggleNavBtn = document.getElementById("toggle_nav_btn");
+    const nav = document.getElementById("nav");
+
+    if (nav.style.display === "none") {
+        nav.style.display = "block";
+        toggleNavBtn.textContent = "إغلاق قائمة التنقل";
+        toggleNavBtn.setAttribute("aria-expanded", "true");
+        toggleNavBtn.setAttribute("aria-label", "إغلاق قائمة التنقل");
+    } else {
+        nav.style.display = "none";
+        toggleNavBtn.textContent = "فتح قائمة التنقل";
+        toggleNavBtn.setAttribute("aria-expanded", "false");
+        toggleNavBtn.setAttribute("aria-label", "فتح قائمة التنقل");
+    }
+}
+
 function setBirthDateRange() {
     const maxDate = new Date(dateTime.getFullYear() - 18, dateTime.getMonth(), dateTime.getDate() + 1 ).toISOString().split("T")[0];
     const minDate = new Date(dateTime.getFullYear() - 30, dateTime.getMonth(), dateTime.getDate() + 1).toISOString().split("T")[0];
@@ -40,6 +57,24 @@ function showOtherCountryInput() {
         otherCountryInput.style.display = "none";
         otherCountryInput.required = false;
     }
+}
+
+function sharePage() {
+  const pageTitle = encodeURIComponent(document.title);
+  const pageUrl = encodeURIComponent(window.location.href);
+  const shareText = `${pageTitle}${encodeURIComponent(": ")}${pageUrl}`;
+
+  whatsapp = document.getElementById("whatsapp");
+  telegram = document.getElementById("telegram");
+  facebook = document.getElementById("facebook");
+  twitter = document.getElementById("twitter");
+  email = document.getElementById("email");
+
+  whatsapp.href = `https://wa.me/?text=${shareText}`;
+  telegram.href = `https://t.me/share/url?url=${pageUrl}&text=${shareText}`
+  facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}&quote=${shareText}`
+  twitter.href = `https://twitter.com/intent/tweet?text=${shareText}`
+  email.href = `mailto:?subject=${pageTitle}&body=${pageUrl}`
 }
 
 function displayDateTime() {
