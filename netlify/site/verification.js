@@ -23,7 +23,34 @@ async function sendPhoneOtp(event) {
     } else {
       alert(data.error);
     }
-  }
+}
+
+
+async function verifyPhoneOtp() {
+    const phoneInput = document.getElementById('phone');
+    const phoneNumber = phoneInput.value;
+    const codeInput = document.getElementById('phone_verification_code_edit');
+    const verificationCode = codeInput.value;
+
+    const response = await fetch('/.netlify/functions/verifyMessage', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        to: phoneNumber,
+        code: verificationCode
+      })
+    });
+
+    const data = await response.json();
+  
+    if (response.ok) {
+      alert(data.message);
+    } else {
+      alert(data.error);
+    }
+}
 
 
 function submitForm() {
