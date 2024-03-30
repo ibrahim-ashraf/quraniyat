@@ -26,7 +26,9 @@ async function sendPhoneOtp(event) {
 }
 
 
-async function verifyPhoneOtp() {
+async function verifyPhoneOtp(event) {
+    event.preventDefault(); // Prevent form submission
+
     const phoneInput = document.getElementById('phone');
     const phoneNumber = phoneInput.value;
     const codeInput = document.getElementById('phone_verification_code_edit');
