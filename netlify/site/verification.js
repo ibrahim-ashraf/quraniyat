@@ -1,4 +1,6 @@
-async function sendPhoneOtp() {
+async function sendPhoneOtp(event) {
+    event.preventDefault(); // Prevent form submission
+
     const phoneInput = document.getElementById('phone');
     const phoneNumber = phoneInput.value;
 
@@ -22,3 +24,9 @@ async function sendPhoneOtp() {
       alert(data.error);
     }
   }
+
+
+function submitForm() {
+    // Add any additional logic before form submission
+    document.forms["verification"].submit();
+}
