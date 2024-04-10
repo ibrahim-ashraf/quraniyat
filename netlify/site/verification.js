@@ -1,5 +1,10 @@
+const phoneInputField = document.getElementById("phone");
+
 let phoneInput;
 let phoneNumber;
+let verificationChannel;
+let phoneOtpSent;
+let verificationCode;
 
 
 function getIp(callback) {
@@ -16,7 +21,6 @@ function getIp(callback) {
 
 
 function initialIntlTelInput() {
-    var phoneInputField = document.getElementById("phone");
     phoneInput = window.intlTelInput(phoneInputField, {
         initialCountry: "auto",
         geoIpLookup: getIp,
@@ -29,6 +33,7 @@ async function sendPhoneOtp(event) {
     event.preventDefault();
 
     phoneNumber = phoneInput.getNumber();
+    alert(phoneNumber)
 
     const response = await fetch('/.netlify/functions/sendMessage', {
         method: 'POST',
@@ -37,7 +42,7 @@ async function sendPhoneOtp(event) {
         },
         body: JSON.stringify({
             to: phoneNumber,
-            channel: 'sms'
+            channel: verificationChannel
         })
     });
 
@@ -74,6 +79,63 @@ async function verifyPhoneOtp(event) {
         alert(`تم التحقق من ${phoneNumber} بنجاح.`);
     } else {
         alert(`فشل التحقق. نص الخطأ: ${data.error}`);
+    }
+}
+
+
+function createVerificationCode() {
+    let verificationCode = "";
+
+    for (let i = 0; i < 6; i++) {
+        verificationCode += Math.floor(Math.random() * 10);
+    }
+
+    return verificationCode;
+}
+
+
+async function sendEmailOtp(event) {
+    event.preventDefault();
+
+    emailjs.init({
+        publicKey: "6PZw9nri_ADHR5lRq"
+    });
+
+    const nameInput = document.getElementById('name');
+    const name = nameInput.value;
+    const emailInput = document.getElementById('email');
+    const email = emailInput.value;
+    verificationCode = createVerificationCode();
+
+    const serviceId = 'verify';
+    const templateId = 'verify_emails';
+    const templateParams = {
+        to_name: name,
+        to_email: email,
+        verification_code: verificationCode
+    };
+
+    emailjs.send(serviceId, templateId, templateParams)
+    .then(function(response) {
+        alert('Verification email sent successfully!');
+    }, function(error) {
+        alert('Failed to send verification email. Error: ' + error.text);
+    });
+}
+
+
+function verifyEmailOtp(event) {
+    event.preventDefault();
+
+    const emailInput = document.getElementById('email');
+    const email = emailInput.value;
+    const codeInput = document.getElementById('email_verification_code_edit');
+    const code = codeInput.value;
+
+    if (code === verificationCode) {
+        alert('Email verification successful!');
+    } else {
+        alert('Invalid verification code.');
     }
 }
 

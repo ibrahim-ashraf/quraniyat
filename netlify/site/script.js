@@ -1,3 +1,18 @@
+import firebase from 'firebase/app';
+import 'firebase/firestore';
+import 'firebase/auth';
+
+const firebaseConfig = {
+    apiKey: "AIzaSyAmEBokBuN-pDnnuiRqzskl8tSXJfGfTcY",
+    authDomain: "ibrahim-xurf.firebaseapp.com",
+    projectId: "ibrahim-xurf",
+    storageBucket: "ibrahim-xurf.appspot.com", 
+    messagingSenderId: "968440264219",
+    appId: "1:968440264219:web:d3f36ab6f9c946fd292abe"
+};
+
+firebase.initializeApp(firebaseConfig);
+
 const dateTime = new Date();
 
 function toggleNavigationMenu() {
@@ -76,6 +91,21 @@ function sharePage() {
   twitter.href = `https://twitter.com/intent/tweet?text=${shareText}`
   email.href = `mailto:?subject=${pageTitle}&body=${pageUrl}`
 }
+
+
+function addData() {
+    firestore.collection('users').add({
+        name: 'John Doe',
+        age: 30
+    })
+    .then((docRef) => {
+        alert('Document written with ID: ', docRef.id);
+    })
+    .catch((error) => {
+        alert('Error adding document: ', error);
+    });
+}
+
 
 function displayDateTime() {
     const days = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
