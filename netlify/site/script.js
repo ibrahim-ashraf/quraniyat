@@ -1,4 +1,5 @@
-import supabase from './supabase.js';
+// import supabase from './supabase.js';
+import supabase from 'https://quraniyat.netlify.app/supabase.js';
 
 const dateTime = new Date();
 
