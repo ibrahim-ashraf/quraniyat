@@ -1,3 +1,5 @@
+import supabase from '../functions/supabase.js';
+
 const dateTime = new Date();
 
 function toggleNavigationMenu() {
@@ -75,6 +77,22 @@ function sharePage() {
   facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}&quote=${shareText}`
   twitter.href = `https://twitter.com/intent/tweet?text=${shareText}`
   email.href = `mailto:?subject=${pageTitle}&body=${pageUrl}`
+}
+
+async function insertData() {
+    const { error } = await supabase
+        .from('Users')
+        .insert({
+            name: 'Ibrahim Ashraf',
+            gender: 'Male',
+            age: 18
+        })
+
+    if (error) {
+        console.error('Error inserting data:', error)
+    } else {
+        console.log('Data inserted successfully!')
+    }
 }
 
 
