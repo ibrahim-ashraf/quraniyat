@@ -1,5 +1,5 @@
-// import supabase from './supabase.js'
-const supabase = require('./supabase.js')
+import supabase from "./supabase.js"
+
 const dateTime = new Date();
 
 function toggleNavigationMenu() {
