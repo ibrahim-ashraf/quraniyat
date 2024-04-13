@@ -84,7 +84,7 @@ function sharePage() {
 
 async function insertData() {
     const { error } = await sbase
-        .from('Users')
+        .from('users')
         .insert({
             name: 'Ibrahim Ashraf',
             gender: 'Male',
