@@ -11,8 +11,7 @@ async function initializeSupabase() {
     supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 }
 
-await initializeSupabase();
-
+initializeSupabase();
 
 const dateTime = new Date();
 
