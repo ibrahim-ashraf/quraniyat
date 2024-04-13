@@ -1,23 +1,23 @@
-// const supabaseUrl = "https://ovonkzsbmfrwtzjmhatb.supabase.co";
-// const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92b25renNibWZyd3R6am1oYXRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI3NjQ2MTIsImV4cCI6MjAyODM0MDYxMn0.eBlzqI4U3byFYss3P0zw4BCREg9YmN678L-NsoXhwqA";
-// const supabaseUrl = process.env.SUPABASE_URL;
-// const supabaseKey = process.env.SUPABASE_KEY;
-// const sbase = supabase.createClient(supabaseUrl, supabaseKey);
+// let supabaseClient;
 
-let supabaseClient;
+async function getSupabaseClient() {
+    const response = await fetch('/.netlify/functions/supabaseCreds');
+    const { supabase } = await response.json();
+    return supabase;
+}
 
 async function getSupabaseCreds() {
     const response = await fetch('/.netlify/functions/supabaseCreds');
     const { supabaseUrl, supabaseKey } = await response.json();
     return { supabaseUrl, supabaseKey };
 }
-  
+
   async function initializeSupabase() {
     const { supabaseUrl, supabaseKey } = await getSupabaseCreds();
     supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 }
 
-initializeSupabase();
+// initializeSupabase();
 
 
 const dateTime = new Date();
@@ -100,12 +100,14 @@ function sharePage() {
 }
 
 async function insertData() {
-    const { error } = await supabaseClient
+    const supabase = await getSupabaseClient();
+
+    const { error } = await supabase
         .from('users')
         .insert({
-            name: 'Rancy',
+            name: 'Amira',
             gender: 'Female',
-            age: 9
+            age: 7
         })
 
     if (error) {
