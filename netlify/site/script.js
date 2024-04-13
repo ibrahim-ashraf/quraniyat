@@ -8,7 +8,8 @@ async function getSupabaseClient() {
     return supabase;
 }
 
-console.log(typeof supabase)
+getSupabaseClient();
+console.log(typeof supabase);
 
 async function getSupabaseCreds() {
     const response = await fetch('/.netlify/functions/supabaseCreds');
