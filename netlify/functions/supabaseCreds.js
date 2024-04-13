@@ -9,7 +9,7 @@ exports.handler = async function () {
     return {
         statusCode: 200,
         headers: {
-            'Content-Type': 'application/json',
+            'Content-Type': 'text/plain; charset=utf-8',
         },
         // body: JSON.stringify({ supabaseUrl, supabaseKey }),
         // body: JSON.stringify({ supabase }),
