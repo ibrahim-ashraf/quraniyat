@@ -1,5 +1,5 @@
-const supabaseClient = supabase.createClient('https://ovonkzsbmfrwtzjmhatb.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92b25renNibWZyd3R6am1oYXRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI3NjQ2MTIsImV4cCI6MjAyODM0MDYxMn0.eBlzqI4U3byFYss3P0zw4BCREg9YmN678L-NsoXhwqA');
-console.log(typeof supabaseClient)
+// const supabaseClient = supabase.createClient('https://ovonkzsbmfrwtzjmhatb.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92b25renNibWZyd3R6am1oYXRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI3NjQ2MTIsImV4cCI6MjAyODM0MDYxMn0.eBlzqI4U3byFYss3P0zw4BCREg9YmN678L-NsoXhwqA');
+// console.log(typeof supabaseClient)
 
 async function getSupabaseClient() {
     const response = await fetch('/.netlify/functions/supabaseCreds');
@@ -7,6 +7,8 @@ async function getSupabaseClient() {
 
     return supabase;
 }
+
+console.log(typeof supabase)
 
 async function getSupabaseCreds() {
     const response = await fetch('/.netlify/functions/supabaseCreds');
