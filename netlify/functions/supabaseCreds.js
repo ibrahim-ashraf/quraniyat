@@ -12,6 +12,7 @@ exports.handler = async function () {
             'Content-Type': 'application/json',
         },
         // body: JSON.stringify({ supabaseUrl, supabaseKey }),
+        // body: JSON.stringify({ supabase }),
         body: JSON.stringify({ supabase }),
     };
 };
