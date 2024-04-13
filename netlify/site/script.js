@@ -1,5 +1,7 @@
-const supabaseUrl = "https://ovonkzsbmfrwtzjmhatb.supabase.co";
-const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92b25renNibWZyd3R6am1oYXRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI3NjQ2MTIsImV4cCI6MjAyODM0MDYxMn0.eBlzqI4U3byFYss3P0zw4BCREg9YmN678L-NsoXhwqA";
+// const supabaseUrl = "https://ovonkzsbmfrwtzjmhatb.supabase.co";
+// const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92b25renNibWZyd3R6am1oYXRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI3NjQ2MTIsImV4cCI6MjAyODM0MDYxMn0.eBlzqI4U3byFYss3P0zw4BCREg9YmN678L-NsoXhwqA";
+const supabaseUrl = process.env.SUPABASE_URL;
+const supabaseKey = process.env.SUPABASE_KEY;
 const sbase = supabase.createClient(supabaseUrl, supabaseKey);
 
 
@@ -86,15 +88,15 @@ async function insertData() {
     const { error } = await sbase
         .from('users')
         .insert({
-            name: 'Ibrahim Ashraf',
-            gender: 'Male',
-            age: 18
+            name: 'Rancy',
+            gender: 'Female',
+            age: 9
         })
 
     if (error) {
-        console.error('Error inserting data:', error)
+        alert('Error inserting data:', error)
     } else {
-        console.log('Data inserted successfully!')
+        alert('Data inserted successfully!')
     }
 }
 
