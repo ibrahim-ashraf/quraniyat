@@ -3,13 +3,14 @@
 
 async function getSupabaseClient() {
     const response = await fetch('/.netlify/functions/supabaseCreds');
-    const { supabase } = await response.json();
+    const { supabase } = await response;
 
     return supabase;
 }
 
 getSupabaseClient();
 console.log(typeof supabase);
+console.log(supabase);
 
 async function getSupabaseCreds() {
     const response = await fetch('/.netlify/functions/supabaseCreds');
