@@ -1,4 +1,4 @@
-// let supabaseClient;
+// const supabaseClient = supabase;
 
 async function getSupabaseClient() {
     const response = await fetch('/.netlify/functions/supabaseCreds');
