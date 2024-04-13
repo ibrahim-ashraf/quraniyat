@@ -1,9 +1,10 @@
 const supabaseClient = supabase.createClient('https://ovonkzsbmfrwtzjmhatb.supabase.co', 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im92b25renNibWZyd3R6am1oYXRiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MTI3NjQ2MTIsImV4cCI6MjAyODM0MDYxMn0.eBlzqI4U3byFYss3P0zw4BCREg9YmN678L-NsoXhwqA');
+console.log(supabaseClient)
 
 async function getSupabaseClient() {
     const response = await fetch('/.netlify/functions/supabaseCreds');
     const { supabase } = await response.json();
-    console.log(supabaseClient)
+
     return supabase;
 }
 
