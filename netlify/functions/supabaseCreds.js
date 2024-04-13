@@ -13,6 +13,6 @@ exports.handler = async function () {
         },
         // body: JSON.stringify({ supabaseUrl, supabaseKey }),
         // body: JSON.stringify({ supabase }),
-        body: JSON.stringify({ supabase }),
+        body: supabase,
     };
 };
