@@ -2,6 +2,7 @@
 
 async function getSupabaseClient() {
     const response = await fetch('/.netlify/functions/supabaseCreds');
+    alert(response)
     const { supabase } = await response.json();
     return supabase;
 }
