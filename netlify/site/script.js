@@ -1,3 +1,5 @@
+const dateTime = new Date();
+
 let supabaseClient;
 
 async function getSupabaseCreds() {
@@ -11,9 +13,23 @@ async function initializeSupabase() {
     supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
 }
 
-initializeSupabase();
+async function insertData() {
+    initializeSupabase();
 
-const dateTime = new Date();
+    const { error } = await supabaseClient
+        .from('users')
+        .insert({
+            name: 'Esraa',
+            gender: 'Female',
+            age: 4
+        })
+
+    if (error) {
+        alert('Error inserting data:', error)
+    } else {
+        alert('Data inserted successfully!')
+    }
+}
 
 function toggleNavigationMenu() {
     const toggleNavBtn = document.getElementById("toggle_nav_btn");
@@ -90,22 +106,6 @@ function sharePage() {
   facebook.href = `https://www.facebook.com/sharer/sharer.php?u=${pageUrl}&quote=${shareText}`
   twitter.href = `https://twitter.com/intent/tweet?text=${shareText}`
   email.href = `mailto:?subject=${pageTitle}&body=${pageUrl}`
-}
-
-async function insertData() {
-    const { error } = await supabaseClient
-        .from('users')
-        .insert({
-            name: 'Amira',
-            gender: 'Female',
-            age: 7
-        })
-
-    if (error) {
-        alert('Error inserting data:', error)
-    } else {
-        alert('Data inserted successfully!')
-    }
 }
 
 
