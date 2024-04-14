@@ -29,15 +29,14 @@
             <input type="text" name="name" placeholder="أدخل اسمك الكامل" required><br>
             <p>اختر جنسك:</p>
             <label for="male">ذكر</label>
-            <input type="radio" name="male" id="male" value="ذكر">
+            <input type="radio" name="gender" id="male" value="ذكر" required>
             <label for="female">أنثى</label>
-            <input type="radio" name="female" id="female" value="أنثى"><br>
+            <input type="radio" name="gender" id="female" value="أنثى" required><br>
             <label for="birth_date">حدد تاريخ ميلادك</label>
             <p id="birth_date_note"></p>
             <input type="date" name="birth-date" id="birth_date"required><br>
             <h3>معلومات العنوان</h3>
-            <label for="country_search">ابحث عن دولتك</label>
-            <input type="text" id="country_search" placeholder="ابدأ كتابة اسم الدولة"><br>
+            <input type="text" id="country_search" placeholder="ابحث عن دولتك"><br>
             <label for="country">اختر دولتك</label>
             <select name="country" id="country" onchange="showOtherCountryInput()" required>
                 <option value="أذربيجان">أذربيجان</option>
@@ -148,7 +147,10 @@
             <p>ملاحظة هامة: لا يقوم النظام بالتحقق من معلومات الاتصال في الوقت الحالي. لذا، يرجى التحقق منها جيدا قبل الإرسال.</p>
             <h3>المعلومات التعليمية</h3>
             <p>أخبرنا بالمؤهلات التعليمية التي حصلت عليها، وكذلك بمستواك الحالي في القرآن الكريم.</p>
-            <textarea name="educational-qualifications" id="educational_qualifications" cols="30" rows="10" placeholder="المؤهلات التعليمية"></textarea><br>
+            <textarea name="educational-qualifications-and-quran-level" id="educational_qualifications_and_quran_level" cols="30" rows="10" placeholder="المؤهلات التعليمية والمستوى الحالي في القرآن الكريم" required></textarea><br>
+            <h3>ملاحظات إضافية</h3>
+            <p>هل لديك أي ملاحظات إضافية تود إطلاعنا عليها؟ يرجى إخبارنا بها أدناه.</p>
+            <input type="text" name="additional-notes" id="additional_notes" placeholder="ملاحظات إضافية (اختياري)">
             <h2>التحقق من أنك إنسان</h2>
             <p>يساعدنا ذلك في حمايتنا من الطلبات العشوائية وغير المرغوب فيها.</p>
             <h3>إعادة إدخال رمز التحدي العشوائي المكون من 4/6 أرقام</h3>
@@ -193,6 +195,7 @@
             countrySearch.addEventListener('input', function() {
                 const searchValue = this.value;
                 const options = countrySelect.options;
+                let hasMatchingOption = false;
 
                 for (let i = 0; i < options.length; i++) {
                     const option = options[i];
@@ -200,9 +203,25 @@
 
                     if (optionText.includes(searchValue)) {
                         option.style.display = 'block';
+                        hasMatchingOption = true;
                     } else {
                         option.style.display = 'none';
                     }
+                }
+
+                if (hasMatchingOption) {
+                    let firstVisibleOptionIndex = -1;
+
+                    for (let i = 0; i < options.length; i++) {
+                        if (options[i].style.display !== 'none') {
+                            firstVisibleOptionIndex = i;
+                            break;
+                        }
+                    }
+
+                    countrySelect.selectedIndex = firstVisibleOptionIndex;
+                } else {
+                    countrySelect.selectedIndex = -1;
                 }
             });
 
