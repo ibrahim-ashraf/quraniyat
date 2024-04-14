@@ -14,7 +14,7 @@ async function initializeSupabase() {
 }
 
 async function insertData() {
-    initializeSupabase();
+    await initializeSupabase();
 
     const { error } = await supabaseClient
         .from('users')
