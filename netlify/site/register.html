@@ -27,15 +27,17 @@
         <form name="register" action="registration-success.html" method="post" data-netlify="true" data-netlify-recaptcha="true">
             <h3>المعلومات الشخصية</h3>
             <input type="text" name="name" placeholder="أدخل اسمك الكامل" required><br>
-            <label for="gender">اختر جنسك</label>
-            <select name="gender" id="gender" required>
-                <option value="ذكر">ذكر</option>
-                <option value="أنثى">أنثى</option>
-            </select><br>
+            <p>اختر جنسك:</p>
+            <label for="male">ذكر</label>
+            <input type="radio" name="male" id="male" value="ذكر">
+            <label for="female">أنثى</label>
+            <input type="radio" name="female" id="female" value="أنثى"><br>
             <label for="birth_date">حدد تاريخ ميلادك</label>
             <p id="birth_date_note"></p>
             <input type="date" name="birth-date" id="birth_date"required><br>
             <h3>معلومات العنوان</h3>
+            <label for="country_search">ابحث عن دولتك</label>
+            <input type="text" id="country_search" placeholder="ابدأ كتابة اسم الدولة"><br>
             <label for="country">اختر دولتك</label>
             <select name="country" id="country" onchange="showOtherCountryInput()" required>
                 <option value="أذربيجان">أذربيجان</option>
@@ -138,12 +140,15 @@
             <input type="text" name="state" id="state" placeholder="الولاية/المقاطعة/المحافظة" required><br>
             <input type="text" id="city" name="city" placeholder="المدينة/البلدة" required><br>
             <input type="text" id="area" name="area" placeholder="الحي/المنطقة/القرية" required><br>
-            <input type="text" id="zipcode" name="zipcode" placeholder="الرمز البريدي" required><br>
+            <input type="number" id="zipcode" name="zipcode" placeholder="الرمز البريدي" required><br>
             <p>ملاحظة: إدخالك لمعلومات عنوانك بدقة سيساعدنا في التحقق من هويتك بسهولة.</p>
             <h3>معلومات الاتصال</h3>
             <input type="tel" name="phone" placeholder="أدخل رقم هاتفك بالتنسيق الدولي (مثال: +201234567890)" required><br>
             <input type="email" name="email" placeholder="أدخل بريدك الإلكتروني" required><br>
             <p>ملاحظة هامة: لا يقوم النظام بالتحقق من معلومات الاتصال في الوقت الحالي. لذا، يرجى التحقق منها جيدا قبل الإرسال.</p>
+            <h3>المعلومات التعليمية</h3>
+            <p>أخبرنا بالمؤهلات التعليمية التي حصلت عليها، وكذلك بمستواك الحالي في القرآن الكريم.</p>
+            <textarea name="educational-qualifications" id="educational_qualifications" cols="30" rows="10" placeholder="المؤهلات التعليمية"></textarea><br>
             <h2>التحقق من أنك إنسان</h2>
             <p>يساعدنا ذلك في حمايتنا من الطلبات العشوائية وغير المرغوب فيها.</p>
             <h3>إعادة إدخال رمز التحدي العشوائي المكون من 4/6 أرقام</h3>
@@ -181,6 +186,25 @@
             const maxDate = date.maxDate;
 
             document.getElementById("birth_date_note").textContent = `ملاحظة هامة: يجب أن يكون تاريخ ميلادك بين ${minDate} وـ ${maxDate}، مما يعني أن عمرك يجب أن يتراوح بين 18/30 عاما في تاريخ التسجيل.`;
+
+            const countrySelect = document.getElementById('country');
+            const countrySearch = document.getElementById('country_search');
+
+            countrySearch.addEventListener('input', function() {
+                const searchValue = this.value;
+                const options = countrySelect.options;
+
+                for (let i = 0; i < options.length; i++) {
+                    const option = options[i];
+                    const optionText = option.text;
+
+                    if (optionText.includes(searchValue)) {
+                        option.style.display = 'block';
+                    } else {
+                        option.style.display = 'none';
+                    }
+                }
+            });
 
             const challengeCodeInfo = createChallengeCode();
             const challengeCodeNumbers = challengeCodeInfo.challengeCodeNumbers;
