@@ -51,7 +51,8 @@ async function sendPhoneOtp(event) {
     if (response.ok) {
         alert(`تم إرسال رمز التحقق إلى ${phoneNumber}.`);
     } else {
-        alert(`فشل إرسال الرمز. نص الخطأ: ${JSON.parse(data)}`);
+        alert(`فشل إرسال الرمز. نص الخطأ: ${data.error}`);
+        console.log(data);
     }
 }
 
