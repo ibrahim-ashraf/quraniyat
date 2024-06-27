@@ -1,14 +1,19 @@
 <!DOCTYPE html>
 <html lang="ar">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>التسجيل - منصة قرآنيات لتعليم الآيات</title>
+
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
         <button id="toggle_nav_btn" onclick="toggleNavigationMenu()" aria-controls="nav" aria-expanded="false" aria-label="فتح قائمة التنقل">فتح قائمة التنقل</button>
+
         <nav id="nav" style="display: none;">
             <ul>
                 <li><a href="index.html">الرئيسية</a></li>
@@ -17,8 +22,10 @@
                 <li><a href="contact.html">اتصل بنا</a></li>
             </ul>
         </nav>
+
         <h1>التسجيل - منصة قرآنيات لتعليم الآيات</h1>
     </header>
+
     <main>
         <p>
             مرحبا بكم في صفحة التسجيل الإلكتروني الخاصة بمنصة قرآنيات لتعليم الآيات. يرجى ملء هذا النموذج، والتأكد من صحة البيانات قبل الإرسال.<br> إذا كان لديك مخاوف من تعاملنا مع بياناتك، فنوصي بشدة بمراجعة <a href="privacy-policy.html">سياسة الخصوصية الخاصة بنا</a> قبل متابعة التسجيل.
@@ -34,7 +41,7 @@
             <input type="radio" name="gender" id="female" value="أنثى" required><br>
             <label for="birth_date">حدد تاريخ ميلادك</label>
             <p id="birth_date_note"></p>
-            <input type="date" name="birth-date" id="birth_date"required><br>
+            <input type="date" name="birth-date" id="birth_date" required><br>
             <h3>معلومات العنوان</h3>
             <input type="text" id="country_search" placeholder="ابحث عن دولتك"><br>
             <label for="country">اختر دولتك</label>
@@ -182,7 +189,7 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="script.js"></script>
     <script>
-        window.onload = function() {
+        window.onload = function () {
             const date = setBirthDateRange();
             const minDate = date.minDate;
             const maxDate = date.maxDate;
@@ -192,7 +199,7 @@
             const countrySelect = document.getElementById('country');
             const countrySearch = document.getElementById('country_search');
 
-            countrySearch.addEventListener('input', function() {
+            countrySearch.addEventListener('input', function () {
                 const searchValue = this.value;
                 const options = countrySelect.options;
                 let hasMatchingOption = false;
@@ -229,11 +236,12 @@
             const challengeCodeNumbers = challengeCodeInfo.challengeCodeNumbers;
             const challengeCode = challengeCodeInfo.challengeCode;
 
-            document.getElementById("challenge_code_info").textContent = `لقد أنشأنا رمزا عشوائيا مكونا من ${challengeCodeNumbers} أرقام. هو: ${challengeCode}. يرجى إعادة إدخاله أدناه. ملاحظة هامة: لا يقوم النظام بالتحقق من تطابق الرمز الذي تعيد إدخاله مع الرمز الذي أنشأناه، ولكننا سنتحقق منه لاحقا. لذا، يرجى التحقق من التطابق قبل الإرسال.`
+            document.getElementById("challenge_code_info").textContent = `لقد أنشأنا رمزا عشوائيا مكونا من ${challengeCodeNumbers} أرقام. هو: ${challengeCode}. يرجى إعادة إدخاله أدناه. ملاحظة هامة: لا يقوم النظام بالتحقق من تطابق الرمز الذي تعيد إدخاله مع الرمز الذي أنشأناه، ولكننا سنتحقق منه لاحقا. لذا، يرجى التحقق من التطابق قبل الإرسال.`;
 
             sharePage();
         };
     </script>
-    
+
 </body>
+
 </html>
