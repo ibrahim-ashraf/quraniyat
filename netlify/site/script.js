@@ -6,7 +6,7 @@ function createChallengeCode() {
     challengeCode += Math.floor(Math.random() * 10);
   }
 
-  document.getElementById("challenge-code-text").innerHTML = challengeCode;
+  document.getElementById('challenge-code-text').innerHTML = challengeCode;
   document.getElementById("challenge-code-hidden").value = challengeCode;
 
   return challengeCode;
