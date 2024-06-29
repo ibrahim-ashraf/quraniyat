@@ -9,7 +9,7 @@ exports.handler = async (event, context) => {
 
   try {
     const client = await MongoClient.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
-    const db = client.db('your_database_name');
+    const db = client.db('quraniyat');
     const collection = db.collection('form_submissions');
 
     await collection.insertOne(data);
