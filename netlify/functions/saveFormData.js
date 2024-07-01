@@ -1,14 +1,17 @@
 const MongoClient = require('mongodb').MongoClient;
 
 exports.handler = async (event, context) => {
+  const mongodbURI = process.env.MONGODB_URI;
   if (event.httpMethod !== 'POST') {
     return { statusCode: 405, body: 'Method Not Allowed' };
   }
 
   const data = JSON.parse(event.body);
+  console.log(data);
+  console.log(mongodbURI);
 
   try {
-    const client = await MongoClient.connect(process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
+    const client = await MongoClient.connect(mongodbURI, { useNewUrlParser: true, useUnifiedTopology: true });
     const db = client.db('quraniyat');
     const collection = db.collection('form_submissions');
 
