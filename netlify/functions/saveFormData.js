@@ -11,13 +11,19 @@ exports.handler = async (event, context) => {
   console.log(mongodbURI);
 
   try {
+    console.log('Connecting to MongoDB...');
     const client = await MongoClient.connect(mongodbURI, { useNewUrlParser: true, useUnifiedTopology: true });
+    console.log('Connected to MongoDB');
+
     const db = client.db('quraniyat');
     const collection = db.collection('form_submissions');
 
+    console.log('Inserting data...');
     await collection.insertOne(data);
+    console.log('Data inserted successfully');
 
     client.close();
+    console.log('Connection closed');
 
     return {
       statusCode: 200,
