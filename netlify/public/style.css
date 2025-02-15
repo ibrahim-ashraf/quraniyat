@@ -1,0 +1,160 @@
+/* Reset some default styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Arial', sans-serif;
+  line-height: 1.6;
+  background-color: #f4f4f4;
+  color: #333;
+  direction: rtl;
+  text-align: right;
+  padding: 20px;
+}
+
+/* Header */
+header {
+  background: #009688;
+  color: #fff;
+  padding: 10px 0;
+  text-align: center;
+}
+
+header #nav-container {
+  margin: 0 auto;
+}
+
+/* Navigation */
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+}
+
+nav ul li {
+  margin: 0 10px;
+}
+
+nav ul li a {
+  color: #fff;
+  text-decoration: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  transition: background-color 0.3s ease;
+}
+
+nav ul li a:hover {
+  background-color: #00796b;
+}
+
+/* Main Content */
+main {
+  margin: 20px auto;
+  max-width: 900px;
+  background: #fff;
+  padding: 20px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1,
+h2,
+h3 {
+  margin-bottom: 15px;
+}
+
+h1 {
+  color: #009688;
+}
+
+p {
+  margin-bottom: 10px;
+}
+
+a {
+  color: #009688;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* Forms */
+form {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+input[type="text"],
+input[type="date"],
+input[type="number"],
+input[type="tel"],
+input[type="email"],
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+input[type="submit"] {
+  background: #009688;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1em;
+}
+
+input[type="submit"]:hover {
+  background: #00796b;
+}
+
+label {
+  font-weight: bold;
+}
+
+/* Specific Styles for Pages */
+#home {
+  text-align: center;
+}
+
+#home p {
+  font-size: 1.2em;
+  margin-bottom: 20px;
+}
+
+#donate-form input[type="text"],
+#donate-form input[type="number"] {
+  width: calc(50% - 10px);
+  display: inline-block;
+  margin-right: 10px;
+}
+
+#donate-form input[type="text"]:last-child,
+#donate-form input[type="number"]:last-child {
+  margin-right: 0;
+}
+
+/* Footer */
+footer {
+  background: #009688;
+  color: #fff;
+  text-align: center;
+  padding: 10px 0;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  margin-top: 20px;
+  box-shadow: 0 -1px 10px rgba(0, 0, 0, 0.1);
+}

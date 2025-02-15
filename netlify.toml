@@ -1,0 +1,20 @@
+[build]
+  publish = "netlify/public"
+  functions = "netlify/functions"
+
+[[redirects]]
+  from = "http://*"
+  to = "https://:splat"
+  status = 301
+  force = true
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    Access-Control-Allow-Origin = "*"    # تمكين CORS للتطوير
+    X-Content-Type-Options = "nosniff"  # تحسين الأمان
+
+[dev]
+  # publish = "netlify/public"
+  port = 2004
+autoLaunch = true

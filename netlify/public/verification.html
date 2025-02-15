@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Document</title>
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.2.0/build/css/intlTelInput.css">
+</head>
+
+<body>
+
+    <h1>التحقق من رقم هاتفك</h1>
+    <form name="verification" method="post">
+        <input type="text" name="name" id="name" placeholder="أدخل اسمك"><br>
+        <input type="tel" name="phone" id="phone" placeholder="أدخل رقم هاتفك"><br>
+        <button id="send_phone_otp_sms" onclick="verificationChannel = 'sms'; sendPhoneOtp(event)">إرسال رمز التحقق عبر رسالة قصيرة</button><br>
+        <button id="send_phone_otp_call" onclick="verificationChannel = 'call'; sendPhoneOtp(event)">إرسال رمز التحقق عبر مكالمة هاتفية</button><br>
+        <p id="resending_otp_info">يمكنك إعادة إرسال الرمز في خلال <span id="resending_otp_timer">01:00</span>.</p>
+        <input type="number" name="phone-otp-field" id="phone_otp_field" placeholder="أدخل رمز التحقق"><br>
+        <button id="verify_phone_otp_btn" onclick="verifyPhoneOtp(event)">التحقق من رقم الهاتف</button>
+        <input type="email" name="email" id="email" placeholder="أدخل بريدك الإلكتروني"><br>
+        <button id="send_email_otp_btn" onclick="sendEmailOtp(event)">إرسال رمز التحقق عبر البريد الإلكتروني</button><br>
+        <input type="number" id="email_verification_code_edit" placeholder="أدخل رمز التحقق"><br>
+        <button id="verify_email_otp_btn" onclick="verifyEmailOtp(event)">التحقق من البريد الإلكتروني</button><br>
+        <input type="submit" value="إرسال" onclick="submitForm()">
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.2.0/build/js/intlTelInput.min.js"></script>
+    <script type="module">
+        import ar from "https://cdn.jsdelivr.net/npm/intl-tel-input@25.2.0/build/js/i18n/ar/index.js";
+        window.ar = ar;
+    </script>
+    <script src="verification.js"></script>
+
+    <script>
+        window.onload = function () {
+            // alert(phoneInputField);
+            initialIntlTelInput();
+        };
+    </script>
+</body>
+
+</html>
