@@ -29,7 +29,6 @@
   external_node_modules = ["mongodb", "jsonwebtoken"]
 
 [build.environment]
-  NODE_VERSION = "18.x"
   GOOGLE_MAPS_API_KEY = "AIzaSyCVmRoMuxDyubg_VAiRCIIpWuZIcH-qzws"
 
 [dev]
