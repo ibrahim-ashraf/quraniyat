@@ -29,7 +29,6 @@
   external_node_modules = ["mongodb", "jsonwebtoken"]
 
 [build.environment]
-  GOOGLE_MAPS_API_KEY = "AIzaSyCVmRoMuxDyubg_VAiRCIIpWuZIcH-qzws"
 
 [dev]
   port = 8888
