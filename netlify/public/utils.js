@@ -1,4 +1,3 @@
-import config from './config.js';
 import errorService from './error-service.js';
 
 // التحقق من حالة المصادقة
