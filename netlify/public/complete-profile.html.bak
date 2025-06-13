@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>إكمال الملف الشخصي - مفتاح العلوم</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+      gap: 0.5rem;
+      justify-content: center;
+      direction: ltr;
+    }
+
+    .otp-input {
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+
+    .alert {
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+    }
+
+    .alert-warning {
+      background-color: #fff3cd;
+      border: 1px solid #ffeeba;
+      color: #856404;
+    }
+
+    .important-note {
+      margin: 0;
+      font-weight: bold;
+    }
+
+    .success-message {
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 4px;
+      background-color: #d4edda;
+      border: 1px solid #c3e6cb;
+      color: #155724;
+      display: none;
+    }
+
+    /* إخفاء جميع الأقسام عدا قسم نوع المستخدم */
+    .form-section:not(#user-type-section) {
+      display: none;
+    }
+
+    /* تنسيق قسم الملاحظات */
+    .notes-section {
+      display: none;
+      padding: 1rem;
+      margin: 1rem 0;
+      background-color: var(--bg-surface);
+      border-radius: 4px;
+    }
+
+    /* تنسيق قسم البرنامج الدراسي والتسعير */
+    .study-program {
+      margin-bottom: 2rem;
+    }
+
+    .pricing-box {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    .program-details {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .program-details p {
+      margin: 0;
+      font-size: 1.1rem;
+    }
+
+    .program-details span {
+      font-weight: bold;
+      color: var(--primary-color);
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div id="nav-container"></div>
+  </header>
+
+  <main>
+    <div class="info-box">
+      <p id="welcome-message"></p>
+    </div>
+
+    <h1>إكمال الملف الشخصي</h1>
+
+    <div class="alert alert-warning">
+      <p class="important-note">ملاحظة هامة: البيانات التي سيتم إدخالها في هذا النموذج لا يمكن تغييرها لاحقاً إلا من خلال التواصل مع إدارة المنصة. يرجى التأكد من صحة جميع البيانات قبل إرسالها.</p>
+    </div>
+
+    <!-- مؤشر التحميل -->
+    <div id="loader" class="loader" style="display: none;">
+      <div class="spinner"></div>
+      <p>جاري المعالجة...</p>
+    </div>
+
+    <!-- رسائل الخطأ -->
+    <div id="error-message" class="error-message" style="display: none;"></div>
+
+    <form id="complete-profile-form" class="profile-form">
+      <!-- قسم نوع المستخدم -->
+      <div class="form-section" id="user-type-section">
+        <h2>نوع المستخدم</h2>
+        <div class="form-group">
+          <label for="user-type">نوع المستخدم:</label>
+          <select id="user-type" name="userType" required>
+            <option value="">اختر نوع المستخدم</option>
+            <option value="child">طفل</option>
+            <option value="student">طالب</option>
+            <option value="teacher">معلم</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- معلومات ولي الأمر والأطفال -->
+      <div id="guardian-info" class="form-section" style="display: none;">
+        <p class="guardian-note note">نظراً لأنك تسجل طفلاً/أطفالاً، نحتاج إلى معلومات ولي الأمر لضمان موافقته على التسجيل والتواصل معه في الأمور المهمة.</p>
+        <h3>معلومات ولي الأمر</h3>
+        <div class="form-group">
+          <label for="guardianName">اسم ولي الأمر:</label>
+          <input type="text" id="guardianName" name="guardianName" required minlength="3" maxlength="50" pattern="^[\u0600-\u06FF\s]{3,}$" title="يرجى إدخال الاسم باللغة العربية (3 أحرف على الأقل)">
+        </div>
+        <div class="form-group">
+          <label for="guardianGender">النوع:</label>
+          <select id="guardianGender" name="guardianGender" required>
+            <option value="">اختر النوع</option>
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="guardianBirthDate">تاريخ الميلاد:</label>
+          <input type="date" id="guardianBirthDate" name="guardianBirthDate" required>
+          <small class="note">* يجب أن يكون عمرك 18 عاماً على الأقل</small>
+        </div>
+        <div class="form-group">
+          <label for="relationship-select">العلاقة بالطفل:</label>
+          <select id="relationship-select" name="relationshipType" required>
+            <option value="">اختر العلاقة</option>
+            <option value="father">والد</option>
+            <option value="mother">والدة</option>
+            <option value="brother">أخ</option>
+            <option value="sister">أخت</option>
+            <option value="other">غير ذلك</option>
+          </select>
+          <div id="other-relationship-container" style="display: none;">
+            <input type="text" id="other-relationship-input" name="otherRelationship" placeholder="يرجى تحديد العلاقة" required>
+          </div>
+        </div>
+
+        <!-- قائمة الأطفال -->
+        <div id="children-list" class="form-section">
+          <h4>معلومات الأطفال</h4>
+          <div id="children-container">
+            <!-- نموذج الطفل الأول -->
+            <div class="child-form" data-child-index="1">
+              <h5>الطفل 1</h5>
+              <div class="form-group">
+                <label for="child-name-1">اسم الطفل:</label>
+                <input type="text" id="child-name-1" name="children[0].name" minlength="3" maxlength="50" pattern="^[\u0600-\u06FF\s]{3,}$" title="يرجى إدخال الاسم باللغة العربية (3 أحرف على الأقل)" required>
+              </div>
+              <div class="form-group">
+                <label for="child-gender-1">النوع:</label>
+                <select id="child-gender-1" name="children[0].gender" required>
+                  <option value="">اختر النوع</option>
+                  <option value="male">ذكر</option>
+                  <option value="female">أنثى</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label for="child-birthdate-1">تاريخ الميلاد:</label>
+                <input type="date" id="child-birthdate-1" name="children[0].birthDate" required>
+                <small class="note">* يجب أن يكون عمر الطفل بين 4 و 18 سنة</small>
+                <p class="note">إذا كان عمر الطفل 18 سنة، يرجى تسجيله كطالب بدلاً من طفل لضمان توافق البيانات مع متطلبات التسجيل.</p>
+              </div>
+            </div>
+          </div>
+          <button type="button" id="add-child" class="secondary-button">إضافة طفل آخر</button>
+        </div>
+      </div>
+
+      <!-- حقول الطالب -->
+      <div id="student-fields" class="form-section" style="display: none;">
+        <h3>معلومات الطالب</h3>
+        <div class="form-group">
+          <label for="student-name">الاسم الكامل:</label>
+          <input type="text" id="student-name" name="student-name" required minlength="3" maxlength="50" pattern="^[\u0600-\u06FF\s]{3,}$" title="يرجى إدخال الاسم باللغة العربية (3 أحرف على الأقل)">
+        </div>
+        <div class="form-group">
+          <label for="student-gender">النوع:</label>
+          <select id="student-gender" name="student-gender" required>
+            <option value="">اختر النوع</option>
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="student-birthdate">تاريخ الميلاد:</label>
+          <input type="date" id="student-birthdate" name="student-birthdate" required>
+          <small class="note">* يجب أن يكون عمرك أكبر من 18 عاماً</small>
+        </div>
+      </div>
+
+      <!-- حقول المعلم -->
+      <div id="teacher-fields" class="form-section" style="display: none;">
+        <h3>معلومات المعلم</h3>
+        <div class="form-group">
+          <label for="nationalId">الرقم القومي:</label>
+          <input type="text" id="nationalId" name="nationalId" pattern="\d{14}" title="يرجى إدخال 14 رقم" required>
+        </div>
+        <div class="form-group">
+          <label for="teacher-birthdate">تاريخ الميلاد:</label>
+          <input type="date" id="teacher-birthdate" name="teacher-birthdate" required>
+          <small class="note">* يجب أن يكون عمرك أكبر من 18 عاماً</small>
+        </div>
+        <div class="form-group">
+          <label for="specialization">التخصص:</label>
+          <select id="specialization" name="specialization" required>
+            <option value="quran">القرآن الكريم</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="teacher-department">القسم:</label>
+          <select id="teacher-department" name="department" required>
+            <option value="recitation">تسميع</option>
+            <option value="recitation_tajweed">تسميع + تجويد</option>
+            <option value="memorization">تحفيظ</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- معلومات الموقع -->
+      <div class="form-section location-fields" id="location-fields">
+        <h3>المنطقة والعنوان</h3>
+        <div class="form-group">
+          <label for="country">الدولة:</label>
+          <select id="country" name="country" required>
+            <option value="">اختر الدولة</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="location">العنوان:</label>
+          <div class="location-container">
+            <input type="text" id="location" name="location" required readonly placeholder="انقر على زر " تحديد الموقع" أدناه لملء العنوان بشكل تلقائي">
+            <button type="button" id="get-location" class="secondary-button">تحديد الموقع</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- البرنامج الدراسي والتسعير -->
+      <div class="form-section study-program" id="study-program">
+        <h3>البرنامج الدراسي</h3>
+        <div class="form-group">
+          <label for="subject">المادة:</label>
+          <select id="subject" name="subject" required>
+            <option value="">اختر المادة</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="department">القسم:</label>
+          <select id="department" name="department" required>
+            <option value="">اختر القسم</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="sessions">عدد الحصص شهرياً:</label>
+          <select id="sessions" name="sessions" required>
+            <option value="">اختر عدد الحصص</option>
+          </select>
+        </div>
+        <div id="pricing-details" class="pricing-box" style="display: none;">
+          <h4>تفاصيل البرنامج</h4>
+          <div class="program-details">
+            <p>مدة الحصة: <span id="session-duration">-- </span> دقيقة</p>
+            <p>السعر الشهري: <span id="program-price">-- </span></p>
+            <p id="multi-child-discount" class="discount-text" style="color: #2b8a3e; font-weight: bold; display: none;"></p>
+            <p class="pricing-note" style="font-size: 0.9rem; color: #666; margin-top: 1rem;">* نعتمد في تسعيرنا بشكل أساسي على الجنيه المصري، ونستخدم بيانات البنك الدولي لتحويل الأسعار إلى العملات الأخرى حسب القوة الشرائية لكل دولة.</p>
+            <div class="discount-info" style="background-color: #f8f9fa; padding: 0.8rem; border-radius: 4px; margin-top: 1rem;">
+              <p style="font-weight: bold; color: #2b8a3e; margin-bottom: 0.5rem;">خصومات الأطفال المتعددين:</p>
+              <ul style="list-style: none; padding: 0; margin: 0;">
+                <li>طفلان: خصم 10% لكل طفل</li>
+                <li>ثلاثة أطفال: خصم 15% لكل طفل</li>
+                <li>أربعة أطفال: خصم 20% لكل طفل</li>
+                <li>خمسة أطفال أو أكثر: خصم 25% لكل طفل</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- معلومات التواصل -->
+      <div class="form-section" id="contact-info">
+        <h3>معلومات التواصل</h3>
+
+        <!-- البريد الإلكتروني المرتبط بالحساب -->
+        <div class="form-group">
+          <label for="account-email">البريد الإلكتروني المرتبط بالحساب:</label>
+          <input type="email" id="account-email" name="account-email" readonly required>
+          <small class="note">* هذا هو البريد الإلكتروني الذي سجلت به. لا يمكن تغييره إلا من خلال <a href="/contact-us.html">التواصل مع إدارة المنصة</a>.</small>
+        </div>
+
+        <div class="form-group">
+          <label for="preferred-contact">طريقة التواصل المفضلة:</label>
+          <select id="preferred-contact" name="preferred-contact" required>
+            <option value="">اختر طريقة التواصل</option>
+            <option value="email">البريد الإلكتروني</option>
+            <option value="phone">رقم الهاتف</option>
+            <option value="messenger">Messenger</option>
+            <option value="other">اقتراح طريقة أخرى</option>
+          </select>
+        </div>
+
+        <div id="contact-details" class="form-group">
+          <!-- سيتم ملء هذا القسم ديناميكياً -->
+        </div>
+
+        <div class="form-group">
+          <label for="preferred-class-platform">طريقة التواصل خلال الحصص:</label>
+          <select id="preferred-class-platform" name="preferred-class-platform" required>
+            <option value="">اختر طريقة التواصل خلال الحصص</option>
+            <option value="zoom">زووم (Zoom)</option>
+            <option value="google-meet">جوجل ميت (Google Meet)</option>
+            <option value="other">اقتراح طريقة أخرى</option>
+          </select>
+        </div>
+
+        <!-- إضافة قسم تفاصيل المنصة الأخرى -->
+        <div id="other-platform-details" class="form-group" style="display: none;">
+          <label for="other-platform-suggestion">اقتراح منصة أخرى:</label>
+          <textarea id="other-platform-suggestion" name="other-platform-suggestion" rows="3" placeholder="يرجى وصف المنصة المقترحة وسبب تفضيلها" required></textarea>
+        </div>
+      </div>
+
+      <!-- قسم المكالمة الأولية -->
+      <div id="initial-call-section" class="form-section" style="display: none;">
+        <h3>موعد المكالمة الأولية</h3>
+        <p class="note">سيتم إجراء مكالمة أولية من قبل المسؤول لتأكيد التسجيل والتعاقد</p>
+
+        <div class="form-group">
+          <label for="preferred-call-date">التاريخ المفضل للمكالمة:</label>
+          <input type="date" id="preferred-call-date" name="preferred-call-date" required>
+        </div>
+
+        <div class="form-group">
+          <label for="preferred-call-time">الوقت المفضل للمكالمة:</label>
+          <select id="preferred-call-time" name="preferred-call-time" required>
+            <option value="">اختر الوقت المناسب</option>
+            <option value="9-12">صباحاً (9 - 12)</option>
+            <option value="12-15">ظهراً (12 - 3)</option>
+            <option value="15-18">عصراً (3 - 6)</option>
+            <option value="18-21">مساءً (6 - 9)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="alternative-call-date">تاريخ بديل (اختياري):</label>
+          <input type="date" id="alternative-call-date" name="alternative-call-date">
+        </div>
+
+        <div class="form-group">
+          <label for="alternative-call-time">وقت بديل (اختياري):</label>
+          <select id="alternative-call-time" name="alternative-call-time">
+            <option value="">اختر الوقت المناسب</option>
+            <option value="9-12">صباحاً (9 - 12)</option>
+            <option value="12-15">ظهراً (12 - 3)</option>
+            <option value="15-18">عصراً (3 - 6)</option>
+            <option value="18-21">مساءً (6 - 9)</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="call-notes">ملاحظات إضافية عن المكالمة (اختياري):</label>
+          <textarea id="call-notes" name="call-notes" rows="3" placeholder="مثال: أفضل وقت للاتصال، أو أي ملاحظات أخرى"></textarea>
+        </div>
+      </div>
+
+      <div class="notes-section" id="notes-section">
+        <div class="form-group">
+          <label for="notes">ملاحظات (اختياري):</label>
+          <textarea id="notes" name="notes" rows="4" maxlength="500" placeholder="هل هناك أي ملاحظة بخصوص أي شيء؟ يرجى إخبارنا بها."></textarea>
+        </div>
+      </div>
+
+      <!-- قسم التأكيد على مراجعة الشروط والأحكام وسياسة الخصوصية -->
+      <div class="form-group">
+        <p class="note">من خلال التسجيل، أنت توافق على الشروط والأحكام وسياسة الخصوصية الخاصة بنا.</p>
+        <input type="checkbox" id="terms-conditions" name="terms-conditions" required>
+        <label for="terms-conditions">أقر بأنني قد قرأت وفهمت <a href="/terms-and-conditions.html">الشروط والأحكام</a> و<a href="/privacy-policy.html">سياسة الخصوصية</a>.</label>
+      </div>
+
+      <!-- رسائل النجاح -->
+      <div id="success-message" class="success-message"></div>
+
+      <button type="submit" class="primary-button">إكمال التسجيل</button>
+    </form>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 منصة مفتاح العلوم. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <script src="loadNav.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
+  <script type="module" src="complete-profile.js"></script>
+  <script type="module" src="auth-guard.js"></script>
+</body>
+
+</html>

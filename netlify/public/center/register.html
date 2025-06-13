@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>تسجيل الأطفال - مركز مفتاح العلوم لتعليم كلام الحي القيوم</title>
+
+  <link href="../style.css" rel="stylesheet">
+
+  <link href="center-style.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
+  <script type="module">
+    import ar from 'https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/i18n/ar/index.js';
+    window.ar = ar;
+  </script>
+</head>
+
+<body>
+
+  <header></header>
+
+  <main class="page-content">
+
+    <h1>تسجيل الأطفال</h1>
+    <h2 style="text-align: center; margin-bottom: 2rem;">تسجيل أطفال جديدة</h2>
+
+    <form id="registrationForm" novalidate>
+      <!-- بيانات ولي الأمر -->
+      <div class="form-section">
+        <h3>بيانات ولي الأمر</h3>
+        <div class="form-grid">
+          <div class="form-group">
+            <label for="parentName" class="form-label">الاسم الكامل</label>
+            <input type="text" class="form-input" id="parentName" required>
+          </div>
+          <div class="form-group">
+            <label class="form-label">النوع</label>
+            <select class="form-select" name="parentGender" required>
+              <option value="">اختر النوع</option>
+              <option value="male">ذكر</option>
+              <option value="female">أنثى</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="relation" class="form-label">صلة القرابة</label>
+            <select class="form-select" id="relation" required>
+              <option value="">اختر صلة القرابة</option>
+              <option value="father">أب</option>
+              <option value="mother">أم</option>
+              <option value="other">غير ذلك</option>
+            </select>
+            <div id="otherRelationDiv" style="display: none" class="form-group">
+              <input type="text" class="form-input" id="otherRelation" placeholder="اذكر صلة القرابة">
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="mainPhone" class="form-label">رقم الهاتف الأساسي</label>
+            <input type="tel" class="form-control" id="mainPhone" required>
+          </div>
+          <div class="form-group">
+            <label for="secondaryPhone" class="form-label">رقم إضافي (اختياري)</label>
+            <input type="tel" class="form-control" id="secondaryPhone">
+          </div>
+        </div>
+      </div>
+
+      <!-- بيانات الطلاب -->
+      <div id="studentsContainer">
+        <!-- نموذج بيانات الطالب الأول -->
+        <div class="student-form card mb-4" data-student-index="1">
+          <div class="card-header d-flex justify-content-between align-items-center">
+            <h3>بيانات الطفل/ة 1</h3>
+          </div>
+          <div class="card-body">
+            <div class="row">
+              <div class="form-group">
+                <label class="form-label">الاسم الكامل</label>
+                <input type="text" class="form-control" name="studentName[]" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">النوع</label>
+                <select class="form-select" name="studentGender[]" required>
+                  <option value="">اختر النوع</option>
+                  <option value="male">ذكر</option>
+                  <option value="female">أنثى</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">يوم الميلاد</label>
+                <select class="form-select birthDay" name="birthDay[]" required>
+                  <option value="">اختر اليوم</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">شهر الميلاد</label>
+                <select class="form-select birthMonth" name="birthMonth[]" required>
+                  <option value="">اختر الشهر</option>
+                  <option value="1">يناير</option>
+                  <option value="2">فبراير</option>
+                  <option value="3">مارس</option>
+                  <option value="4">إبريل</option>
+                  <option value="5">مايو</option>
+                  <option value="6">يونيو</option>
+                  <option value="7">يوليو</option>
+                  <option value="8">أغسطس</option>
+                  <option value="9">سبتمبر</option>
+                  <option value="10">أكتوبر</option>
+                  <option value="11">نوفمبر</option>
+                  <option value="12">ديسمبر</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">سنة الميلاد</label>
+                <select class="form-select birthYear" name="birthYear[]" required>
+                  <option value="">اختر السنة</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">العمر</label>
+                <input type="text" class="form-control age-display" readonly>
+              </div>
+              <div class="form-group">
+                <label class="form-label academic-grid-label">الصف الدراسي للعام </label>
+                <select class="form-select" name="grade[]" required>
+                  <option value="">اختر الصف الدراسي</option>
+                  <option value="kg1">رياض أطفال مستوى أول</option>
+                  <option value="kg2">رياض أطفال مستوى ثان</option>
+                  <option value="primary1">الأول الابتدائي</option>
+                  <option value="primary2">الثاني الابتدائي</option>
+                  <option value="primary3">الثالث الابتدائي</option>
+                  <option value="primary4">الرابع الابتدائي</option>
+                  <option value="primary5">الخامس الابتدائي</option>
+                  <option value="primary6">السادس الابتدائي</option>
+                  <option value="prep1">الأول الإعدادي</option>
+                  <option value="prep2">الثاني الإعدادي</option>
+                  <option value="prep3">الثالث الإعدادي</option>
+                  <option value="secondary1">الأول الثانوي</option>
+                  <option value="secondary2">الثاني الثانوي</option>
+                  <option value="secondary2">الثالث الثانوي</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">المعهد/المدرسة</label>
+                <select class="form-select" name="school[]" required>
+                  <option value="">اختر المعهد/المدرسة</option>
+                  <option value="معهد حانوت الأزهري">معهد حانوت الأزهري</option>
+                  <option value="معهد دهتورة الأزهري">معهد دهتورة الأزهري</option>
+                  <option value="معهد كشك الأزهري">معهد كشك الأزهري</option>
+                  <option value="معهد كفر سنباط الأزهري">معهد كفر سنباط الأزهري</option>
+                  <option value="معهد سنباط الأزهري">معهد سنباط الأزهري</option>
+                  <option value="مدرسة حانوت الجديدة">مدرسة حانوت الجديدة</option>
+                  <option value="مدرسة حانوت رقم 2">مدرسة حانوت رقم 2</option>
+                  <option value="مدرسة عبد الغفار جاد الله الابتدائية">مدرسة عبد الغفار جاد الله الابتدائية</option>
+                  <option value="مدرسة حانوت الإعدادية المشتركة">مدرسة حانوت الإعدادية المشتركة</option>
+                  <option value="مدرسة دهتورة الثانوية المشتركة">مدرسة دهتورة الثانوية المشتركة</option>
+                  <option value="مدرسة سنباط الثانوية المشتركة">مدرسة سنباط الثانوية المشتركة</option>
+                  <option value="فصول حانوت التجارية المشتركة">فصول حانوت التجارية المشتركة</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="form-label">عدد الأجزاء المحفوظة</label>
+                <input type="number" class="form-control" name="memorizedParts[]" min="0" max="30" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">ملاحظات إضافية (اختياري)</label>
+                <textarea class="form-control" name="notes[]" rows="2"></textarea>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <button type="button" id="addStudentBtn" class="btn btn-success">
+          <i class="bi bi-plus-circle"></i> إضافة طفل آخر
+        </button>
+      </div>
+
+      <div class="card mb-4">
+        <div class="card-body">
+          <div class="form-check mb-3">
+            <input class="form-check-input" type="checkbox" id="confirmData" required>
+            <label class="form-check-label" for="confirmData">
+              أؤكد صحة جميع البيانات المدخلة
+            </label>
+          </div>
+          <div class="form-check mb-3"> <input class="form-check-input" type="checkbox" id="agreeToTerms" required>
+            <label class="form-check-label" for="agreeToTerms">
+              أوافق على الالتزام <a href="regulations.html" target="_blank">باللوائح التنظيمية للمركز</a>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary btn-lg">تسجيل</button>
+      </div>
+    </form>
+  </main>
+
+  <footer></footer>
+
+  <script src="components.js"></script>
+  <script src="register.js"></script>
+  <script>
+    document.querySelector('.academic-grid-label').textContent += `${getCurrentAcademicYear()}م (العام الدراسي الجديد يبدأ في أكتوبر)`;
+  </script>
+</body>
+
+</html>

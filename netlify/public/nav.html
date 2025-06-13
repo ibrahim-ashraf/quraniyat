@@ -1,8 +1,149 @@
-<nav>
-  <ul>
-    <li><a href="index.html">الرئيسية</a></li>
-    <li><a href="register.html">التسجيل</a></li>
-    <li><a href="educational-paths.html">المسارات التعليمية</a></li>
-    <li><a href="contact-us.html">اتصل بنا</a></li>
-  </ul>
-</nav>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link rel="stylesheet" href="/style.css">
+
+  <style>
+    /* Fallback styles in case external CSS fails to load */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+    }
+
+    .nav-logo a {
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .nav-menu {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-item {
+      text-decoration: none;
+    }
+
+    .auth-required {
+      display: none;
+    }
+
+    .nav-auth {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .user-menu {
+      position: relative;
+    }
+
+    .user-menu-button {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: none;
+      background: none;
+      cursor: pointer;
+    }
+
+    .user-avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+    }
+
+    .user-name {
+      color: #333;
+    }
+
+    .user-dropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      background: white;
+      border: 1px solid #eee;
+      display: none;
+    }
+
+    .user-menu:hover .user-dropdown {
+      display: block;
+    }
+
+    .login-link {
+      text-decoration: none;
+    }
+
+    .logout-link {
+      color: #dc3545;
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav>
+    <div class="nav-logo">
+      <a href="/">مفتاح العلوم</a>
+    </div>
+    <div class="nav-menu">
+      <a href="/" class="nav-item">الرئيسية</a>
+      <a href="/faq.html" class="nav-item">الأسئلة الشائعة</a>
+      <a href="/contact-us.html" class="nav-item">اتصل بنا</a>
+      <a href="/terms.html" class="nav-item">الشروط والأحكام</a>
+      <a href="/privacy-policy.html" class="nav-item">سياسة الخصوصية</a>
+      <a href="/profile.html" class="nav-item auth-required">حسابي</a>
+    </div>
+    <div class="nav-auth">
+      <div class="user-menu">
+        <button class="user-menu-button">
+          <img src="/assets/default-avatar.png" alt="صورة المستخدم" class="user-avatar" />
+          <span class="user-name"></span>
+        </button>
+        <div class="user-dropdown">
+          <a href="/profile.html">الملف الشخصي</a>
+          <a href="#" class="logout-link">تسجيل الخروج</a>
+        </div>
+      </div>
+      <a href="/login.html" class="login-link nav-button">تسجيل الدخول</a>
+    </div>
+  </nav>
+
+  <script type="module">
+    const logoutLink = document.querySelector('.logout-link');
+    if (logoutLink) {
+      logoutLink.addEventListener('click', async (e) => {
+        e.preventDefault();
+        if (confirm('هل أنت متأكد من رغبتك في تسجيل الخروج؟')) {
+          try {
+            const response = await fetch('/.netlify/functions/logout', {
+              method: 'POST',
+              headers: {
+                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+              }
+            });
+
+            if (!response.ok) {
+              throw new Error('فشل تسجيل الخروج');
+            }
+
+            localStorage.removeItem('auth_token');
+            sessionStorage.clear();
+            window.location.href = '/login.html?message=تم تسجيل الخروج بنجاح';
+          } catch (error) {
+            console.error('خطأ في تسجيل الخروج:', error);
+            alert('حدث خطأ أثناء تسجيل الخروج');
+          }
+        }
+      });
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+{
+  "currency": "EGP",
+  "multiChildDiscount": {
+    "2": 10,
+    "3": 15,
+    "4": 20,
+    "5+": 25
+  },
+  "subjects": {
+    "quran": {
+      "name": "القرآن الكريم",
+      "key": "quran",
+      "departments": {
+        "memorization": {
+          "name": "تحفيظ",
+          "description": "برنامج تحفيظ القرآن الكريم",
+          "key": "memorization",
+          "session_duration": 45
+        },
+        "tajweed": {
+          "name": "تجويد",
+          "description": "برنامج تعليم أحكام التجويد",
+          "key": "tajweed",
+          "session_duration": 45
+        },
+        "ijazah": {
+          "name": "الحصول على إجازة",
+          "description": "برنامج الحصول على إجازة في القراءات",
+          "key": "ijazah",
+          "session_duration": 60
+        }
+      }
+    }
+  },
+  "sessions_per_month": [
+    4,
+    8,
+    12,
+    16,
+    20,
+    24,
+    28
+  ],
+  "base_prices": {
+    "memorization": {
+      "4": 100,
+      "8": 180,
+      "12": 261,
+      "16": 332,
+      "20": 390,
+      "24": 438,
+      "28": 502.50
+    },
+    "tajweed": {
+      "4": 500,
+      "8": 800,
+      "12": 1100,
+      "16": 1300,
+      "20": 750,
+      "24": 850,
+      "28": 950
+    },
+    "ijazah": {
+      "4": 300,
+      "8": 450,
+      "12": 600,
+      "16": 700,
+      "20": 800,
+      "24": 900,
+      "28": 1000
+    }
+  }
+}

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>لوحة تحكم الطالب | مفتاح العلوم</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <div id="nav-container"></div>
+  </header>
+
+  <main class="dashboard-container">
+
+    <h1 class="page-title">لوحة تحكم الطالب</h1>
+
+    <div class="dashboard-grid">
+      <!-- البيانات الشخصية -->
+
+      <section class="dashboard-card personal-info">
+        <h2 class="card-header">البيانات الشخصية</h2>
+        <div class="card-content">
+          <div class="profile-image-container">
+            <img id="profileImage" alt="الصورة الشخصية">
+          </div>
+          <div id="personalInfo" class="info-grid">
+            <div class="info-item">
+              <span class="info-label">الاسم:</span>
+              <span id="fullName" class="info-value"></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">البريد الإلكتروني:</span>
+              <span id="email" class="info-value"></span>
+            </div>
+            <a href="contact-us.html" class="primary-button">اتصل بنا لتحديث الملف الشخصي</a>
+          </div>
+        </div>
+      </section>
+
+      <!-- المواد المسجّلة -->
+
+      <section class="dashboard-card registered-courses">
+        <h2 class="card-header">المواد المسجّلة</h2>
+        <div id="subjects-container" class="card-content"></div>
+      </section>
+
+      <!-- الجدول الزمني -->
+
+      <!-- المدفوعات والاشتراكات -->
+
+      <section class="dashboard-card subscription-info">
+        <h2 class="card-header">المدفوعات والاشتراكات</h2>
+        <div class="card-content">
+          <div id="subscriptionInfo" class="info-grid">
+            <div class="info-item">
+              <span class="info-label">نوع الباقة:</span>
+              <span id="packageType" class="info-value"></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">تاريخ البداية:</span>
+              <span id="startDate" class="info-value"></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">تاريخ الانتهاء:</span>
+              <span id="endDate" class="info-value"></span>
+            </div>
+            <div class="info-item">
+              <span class="info-label">حالة الاشتراك:</span>
+              <span id="subscriptionStatus" class="status-badge active">نشط</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- الإعدادات -->
+
+      <section class="dashboard-card settings">
+        <h2 class="card-header">الإعدادات العامة</h2>
+        <div class="card-content">
+          <button id="logoutBtn" class="danger-button">تسجيل الخروج</button>
+        </div>
+      </section>
+    </div>
+  </main>
+  <script type="module" src="loadNav.js"></script>
+  <script type="module" src="auth.js"></script>
+  <script type="module" src="student-dashboard.js"></script>
+</body>
+
+</html>

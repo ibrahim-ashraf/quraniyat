@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>إكمال الملف الشخصي - مفتاح العلوم</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+  <header>
+    <div id="nav-container"></div>
+  </header>
+
+  <main>
+    <div class="container">
+      <div class="info-box">
+        <div class="user-info-section">
+          <div class="info-group">
+            <label>البريد الإلكتروني:</label>
+            <p id="user-email"></p>
+            <small class="note">سيكون هذا البريد الإلكتروني المرتبط بحسابك والذي ستستخدمه لتسجيل الدخول لاحقاً</small>
+            <a href="/login.html" class="text-link">تغيير البريد الإلكتروني (إعادة تسجيل الدخول)</a>
+          </div>
+          <div class="info-group">
+            <label>الاسم:</label>
+            <p id="user-name"></p>
+            <small class="note">يمكنك تعديل الاسم في الصفحة التالية</small>
+          </div>
+        </div>
+      </div>
+
+      <section class="registration-options">
+
+        <h1>اختر نوع التسجيل</h1>
+        <p class="section-description">يرجى اختيار نوع الحساب المناسب لك للمتابعة</p>
+
+        <div class="options-grid">
+          <a href="student-registration.html" class="registration-option"> <i class="fas fa-user-graduate"></i>
+            <h2>طالب</h2>
+            <p>التسجيل للطلاب من عمر 18 عامًا فما فوق للوصول إلى المحتوى التعليمي</p>
+          </a>
+
+          <a href="children-registration.html" class="registration-option">
+            <i class="fas fa-child"></i>
+            <h2>طفل</h2>
+            <p>التسجيل للأطفال من عمر 7 إلى 18 عامًا للوصول إلى المحتوى المخصص</p>
+          </a>
+
+          <a href="teacher-registration.html" class="registration-option">
+            <i class="fas fa-chalkboard-teacher"></i>
+            <h2>معلم</h2>
+            <p>التسجيل كمعلم للمشاركة في التدريس</p>
+          </a>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <footer id="footer-container"></footer>
+  <script type="module" src="complete-profile.js"></script>
+</body>
+
+</html>

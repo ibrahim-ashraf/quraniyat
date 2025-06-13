@@ -3,18 +3,36 @@
   functions = "netlify/functions"
 
 [[redirects]]
-  from = "http://*"
-  to = "https://:splat"
-  status = 301
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/:splat"
+  status = 200
   force = true
 
 [[headers]]
   for = "/*"
   [headers.values]
-    Access-Control-Allow-Origin = "*"    # تمكين CORS للتطوير
-    X-Content-Type-Options = "nosniff"  # تحسين الأمان
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(self)"
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+
+[functions]
+  node_bundler = "esbuild"
+  external_node_modules = ["mongodb", "jsonwebtoken"]
+
+[build.environment]
+  NODE_VERSION = "18.x"
+  GOOGLE_MAPS_API_KEY = "AIzaSyCVmRoMuxDyubg_VAiRCIIpWuZIcH-qzws"
 
 [dev]
-  # publish = "netlify/public"
-  port = 2004
-autoLaunch = true
+  port = 8888
+  publish = "netlify/public"
+  functions = "netlify/functions"

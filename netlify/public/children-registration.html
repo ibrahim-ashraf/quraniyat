@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>تسجيل الأطفال - مفتاح العلوم</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+
+<body>
+  <div id="nav-placeholder"></div>
+
+  <main class="container">
+
+    <h1>تسجيل الأطفال</h1>
+
+    <form id="children-registration-form" class="registration-form">
+      <!-- معلومات ولي الأمر -->
+
+      <section id="guardian-info">
+        <h3>بيانات ولي الأمر</h3>
+
+        <div class="form-group">
+          <label for="guardianName">اسم ولي الأمر:</label>
+          <input type="text" id="guardianName" name="guardianName" required minlength="3" maxlength="50" pattern="^[\u0600-\u06FF\s]{3,}$" title="يرجى إدخال الاسم باللغة العربية (3 أحرف على الأقل)">
+        </div>
+
+        <div class="form-group">
+          <label for="guardianGender">النوع:</label>
+          <select id="guardianGender" name="guardianGender" required>
+            <option value="">اختر النوع</option>
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="guardianBirthDate">تاريخ الميلاد:</label>
+          <input type="date" id="guardianBirthDate" name="guardianBirthDate" required>
+        </div>
+
+        <div class="form-group">
+          <label for="relationship-select">صلة القرابة:</label>
+          <select id="relationship-select" name="relationship" required>
+            <option value="">اختر صلة القرابة</option>
+            <option value="father">أب</option>
+            <option value="mother">أم</option>
+            <option value="other">أخرى</option>
+          </select>
+        </div>
+
+        <div id="other-relationship-container" style="display: none;">
+          <div class="form-group">
+            <label for="other-relationship-input">حدد صلة القرابة:</label>
+            <input type="text" id="other-relationship-input" name="otherRelationship">
+          </div>
+        </div>
+      </section>
+
+      <!-- معلومات الأطفال -->
+
+      <section id="children-list">
+        <h3>بيانات الأطفال</h3>
+        <div id="children-container"></div>
+        <button type="button" id="add-child" class="secondary-button">إضافة طفل</button>
+      </section>
+
+      <!-- معلومات الاتصال -->
+
+      <section>
+        <h3>معلومات الاتصال</h3>
+
+        <div class="form-group">
+          <label for="country">الدولة:</label>
+          <select id="country" name="country" required>
+            <option value="">اختر الدولة</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="location">العنوان:</label>
+          <input type="text" id="location" name="location" required>
+          <button type="button" id="get-location" class="secondary-button">
+            <i class="fas fa-map-marker-alt"></i> تحديد الموقع
+          </button>
+        </div>
+
+        <div class="form-group">
+          <label for="contact-email">البريد الإلكتروني للتواصل:</label>
+          <input type="email" id="contact-email" name="contact-email" required>
+          <div class="checkbox-group">
+            <label>
+              <input type="checkbox" id="use-account-email" name="use-account-email">
+              استخدام نفس البريد الإلكتروني المرتبط بالحساب
+            </label>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="contact-phone">رقم الهاتف:</label>
+          <input type="tel" id="contact-phone" name="contact-phone" required pattern="[0-9]{10,15}" maxlength="15" dir="ltr" title="يرجى إدخال رقم هاتف صحيح يتكون من 10-15 رقم">
+        </div>
+
+        <div class="form-group">
+          <label for="notes">ملاحظات إضافية (اختياري):</label>
+          <textarea id="notes" name="notes" rows="3" placeholder="مثال: الأوقات المفضلة للدراسة، احتياجات خاصة للأطفال، أو أي معلومات إضافية"></textarea>
+        </div>
+      </section>
+
+      <button type="submit" class="primary-button">إكمال التسجيل</button>
+    </form>
+
+    <!-- عرض التسعير -->
+    <div id="pricing-details" style="display: none;">
+      <h3>تفاصيل التسعير</h3>
+      <p>السعر الشهري للطفل الواحد: <span id="program-price"></span></p>
+      <p id="multi-child-discount" style="display: none;"></p>
+    </div>
+  </main>
+
+  <script src="loadNav.js" type="module"></script>
+  <script src="children-registration.js" type="module"></script>
+</body>
+
+</html>

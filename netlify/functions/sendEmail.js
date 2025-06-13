@@ -8,10 +8,10 @@ exports.handler = async (event, context) => {
   }
 
   const { to, subject, text, html } = JSON.parse(event.body);
-  console.log(JSON.parse(event.body));
+
   sgMail.setApiKey(sendgridApiKey);
   const msg = {
-    from: 'quraniyat.platform@gmail.com',
+    from: 'meftah.aloloom@gmail.com',
     to,
     subject,
     text,

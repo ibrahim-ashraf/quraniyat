@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>تسجيل طالب جديد - مفتاح العلوم</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/css/intlTelInput.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/intlTelInput.min.js"></script>
+  <script type="module">
+    import ar from 'https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/i18n/ar/index.js';
+    window.ar = ar;
+  </script>
+</head>
+
+<body>
+  <header>
+    <div id="nav-container"></div>
+  </header>
+
+  <main class="container">
+
+    <h1>تسجيل طالب جديد</h1>
+
+    <form id="student-registration-form" class="registration-form">
+      <div class="form-group">
+        <label for="name-input">الاسم الكامل:</label>
+        <input type="text" id="name-input" name="name" required>
+      </div>
+
+      <div class="form-group">
+        <label for="gender">النوع:</label>
+        <select id="gender" name="gender" required>
+          <option value="">اختر النوع</option>
+          <option value="male">ذكر</option>
+          <option value="female">أنثى</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="student-birthdate">تاريخ الميلاد:</label>
+        <input type="date" id="student-birthdate" name="birthDate" required>
+        <small class="note"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="country">الدولة:</label>
+        <select id="country" name="country" required>
+          <option value="">اختر الدولة</option>
+        </select>
+        <small class="note">لا يمكن تغيير الدولة؛ لأن النظام يحددها تلقائيًا بناءً على عنوان الـ IP الخاص بك.</small>
+      </div>
+
+      <div class="form-group">
+        <label for="location">العنوان:</label>
+        <input type="text" id="location" name="location" required readonly>
+        <button type="button" id="get-location" class="secondary-button">
+          <i class="fas fa-map-marker-alt"></i> تحديد الموقع
+        </button>
+      </div>
+
+      <div id="study-program">
+        <h3>البرنامج الدراسي</h3>
+
+        <div class="form-group">
+          <label for="subject">المادة:</label>
+          <select id="subject" name="subject" required>
+            <option value="">اختر المادة</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="department">القسم:</label>
+          <select id="department" name="department" required>
+            <option value="">اختر القسم</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="sessions">عدد الحصص الشهرية:</label>
+          <select id="sessions" name="sessions" required>
+            <option value="">اختر عدد الحصص</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label for="platform">المنصة التعليمية:</label>
+          <select id="platform" name="platform" required>
+            <option value="">اختر المنصة</option>
+            <option value="zoom">Zoom</option>
+            <option value="google-meet">Google Meet</option>
+          </select>
+        </div>
+        <div id="schedule-preferences" class="form-section" style="display: none;">
+          <h4>تفضيلات المواعيد</h4>
+          <p class="schedule-note">يمكنك اختيار <span id="max-days">0</span> أيام كحد أقصى</p>
+
+          <div class="days-grid">
+            <div class="day-item">
+              <input type="checkbox" id="day-sat" name="preferred-days" value="sat">
+              <label for="day-sat">السبت</label>
+              <div class="time-select" style="display: none;">
+                <select name="time-sat" disabled>
+                  <option value="">اختر الوقت</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="day-item">
+              <input type="checkbox" id="day-sun" name="preferred-days" value="sun">
+              <label for="day-sun">الأحد</label>
+              <div class="time-select" style="display: none;">
+                <select name="time-sun" disabled>
+                  <option value="">اختر الوقت</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="day-item">
+              <input type="checkbox" id="day-mon" name="preferred-days" value="mon">
+              <label for="day-mon">الاثنين</label>
+              <div class="time-select" style="display: none;">
+                <select name="time-mon" disabled>
+                  <option value="">اختر الوقت</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="day-item">
+              <input type="checkbox" id="day-tue" name="preferred-days" value="tue">
+              <label for="day-tue">الثلاثاء</label>
+              <div class="time-select" style="display: none;">
+                <select name="time-tue" disabled>
+                  <option value="">اختر الوقت</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="day-item">
+              <input type="checkbox" id="day-wed" name="preferred-days" value="wed">
+              <label for="day-wed">الأربعاء</label>
+              <div class="time-select" style="display: none;">
+                <select name="time-wed" disabled>
+                  <option value="">اختر الوقت</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="day-item">
+              <input type="checkbox" id="day-thu" name="preferred-days" value="thu">
+              <label for="day-thu">الخميس</label>
+              <div class="time-select" style="display: none;">
+                <select name="time-thu" disabled>
+                  <option value="">اختر الوقت</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="day-item">
+              <input type="checkbox" id="day-fri" name="preferred-days" value="fri">
+              <label for="day-fri">الجمعة</label>
+              <div class="time-select" style="display: none;">
+                <select name="time-fri" disabled>
+                  <option value="">اختر الوقت</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div id="pricing-details" style="display: none;">
+          <p>مدة الحصة: <span id="session-duration"></span> دقيقة</p>
+          <p>السعر الشهري: <span id="program-price"></span></p>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="email-input">البريد الإلكتروني للتواصل:</label>
+        <input type="email" id="email-input" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="phone-input">رقم الهاتف:</label>
+        <input type="tel" id="phone-input" name="phone" dir="ltr" required>
+      </div>
+
+      <div class="form-group">
+        <label for="notes">ملاحظات إضافية (اختياري):</label>
+        <textarea id="notes" name="notes" rows="3" placeholder="أي معلومات إضافية ترغب في إضافتها"></textarea>
+      </div>
+
+      <button type="submit" class="primary-button">إكمال التسجيل</button>
+    </form>
+  </main>
+
+  <script src="loadNav.js" type="module"></script>
+  <script src="student-registration.js" type="module"></script>
+</body>
+
+</html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Permissions-Policy" content="geolocation=(self)">
+
+  <title>الملف الشخصي - منصة مفتاح العلوم</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@23.3.2/build/css/intlTelInput.css">
+
+  <style>
+    .verification-step {
+      display: none;
+      margin-top: 1rem;
+    }
+
+    .otp-input-container {
+      display: flex;
+      gap: 0.5rem;
+      justify-content: center;
+      direction: ltr;
+    }
+
+    .otp-input {
+      width: 40px;
+      height: 40px;
+      text-align: center;
+      font-size: 1.2rem;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div id="nav-container"></div>
+  </header>
+
+  <main>
+
+    <h1>الملف الشخصي</h1>
+    <div class="profile-container">
+      <div class="user-info">
+        <img id="userPicture" src="" alt="الصورة الشخصية" class="profile-picture">
+        <h2 id="userName"></h2>
+        <p id="userEmail"></p>
+
+        <div class="profile-actions">
+          <button id="logoutBtn" class="secondary-button">تسجيل الخروج</button>
+        </div>
+      </div>
+
+      <form id="update-profile-form" class="profile-form">
+        <!-- المعلومات الأساسية -->
+        <div class="form-section">
+          <h3>المعلومات الأساسية</h3>
+          <div class="form-group">
+            <label for="fullName">الاسم الكامل:</label>
+            <input type="text" id="fullName" name="fullName" required minlength="3" maxlength="50" pattern="^[\u0600-\u06FF\s]{3,}$" title="يرجى إدخال الاسم باللغة العربية (3 أحرف على الأقل)">
+          </div>
+
+          <div class="form-group">
+            <label for="gender">النوع:</label>
+            <select id="gender" name="gender" required>
+              <option value="">اختر النوع</option>
+              <option value="male">ذكر</option>
+              <option value="female">أنثى</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="country">الدولة:</label>
+            <select id="country" name="country" required disabled>
+              <option value="egypt">مصر</option>
+            </select>
+          </div>
+
+          <div class="form-group">
+            <label for="location">العنوان:</label>
+            <div class="location-container">
+              <input type="text" id="location" name="location" required>
+              <button type="button" id="get-location" class="secondary-button">تحديد موقعي</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- معلومات التواصل -->
+        <div class="form-section">
+          <h3>معلومات التواصل</h3>
+          <div class="form-group">
+            <label for="account-email">البريد الإلكتروني المرتبط بالحساب:</label>
+            <input type="email" id="account-email" name="account-email" readonly>
+            <small class="note">* لا يمكن تغيير البريد الإلكتروني المرتبط بالحساب. لتغييره، يرجى <a href="/login.html">العودة إلى صفحة تسجيل الدخول</a> واستخدام حساب Google المطلوب أو الاتصال بنا.</small>
+          </div>
+
+          <div class="form-group">
+            <label for="preferred-contact">طريقة التواصل المفضلة:</label>
+            <select id="preferred-contact" name="preferred-contact" required>
+              <option value="">اختر طريقة التواصل</option>
+              <option value="email">البريد الإلكتروني</option>
+              <option value="phone">رقم الهاتف</option>
+              <option value="messenger">Messenger</option>
+              <option value="other">اقتراح طريقة أخرى</option>
+            </select>
+          </div>
+
+          <div id="contact-details" class="form-group">
+            <!-- سيتم ملء هذا القسم ديناميكياً بناءً على الاختيار -->
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="userType">نوع المستخدم:</label>
+          <select id="userType" name="userType" required>
+            <option value="">اختر نوع المستخدم</option>
+            <option value="student">طالب</option>
+            <option value="teacher">معلم</option>
+          </select>
+        </div>
+
+        <!-- حقول المعلم -->
+        <div id="teacher-fields" class="form-section" style="display: none;">
+          <h3>معلومات المعلم</h3>
+          <div class="form-group">
+            <label for="nationalId">الرقم القومي:</label>
+            <input type="text" id="nationalId" name="nationalId" pattern="[0-9]{14}" title="الرقم القومي يجب أن يكون 14 رقم">
+          </div>
+
+          <div class="form-group">
+            <label for="teacher-birthdate">تاريخ الميلاد:</label>
+            <input type="date" id="teacher-birthdate" name="teacher-birthdate">
+          </div>
+
+          <div class="form-group">
+            <label for="specialization">التخصص:</label>
+            <input type="text" id="specialization" name="specialization">
+          </div>
+
+          <div class="form-group">
+            <label for="department">القسم:</label>
+            <select id="department" name="department">
+              <option value="">اختر القسم</option>
+              <option value="arabic">اللغة العربية</option>
+              <option value="quran">القرآن الكريم</option>
+              <option value="islamic">العلوم الإسلامية</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- حقول الطالب -->
+        <div id="student-fields" class="form-section" style="display: none;">
+          <h3>معلومات الطالب</h3>
+          <div class="form-group">
+            <label for="student-birthdate">تاريخ الميلاد:</label>
+            <input type="date" id="student-birthdate" name="student-birthdate">
+          </div>
+
+          <!-- معلومات ولي الأمر -->
+          <div id="guardian-info" class="sub-section" style="display: none;">
+            <h4>معلومات ولي الأمر</h4>
+            <div class="form-group">
+              <label for="guardianName">اسم ولي الأمر:</label>
+              <input type="text" id="guardianName" name="guardianName">
+            </div>
+
+            <div class="form-group">
+              <label for="guardianGender">نوع ولي الأمر:</label>
+              <select id="guardianGender" name="guardianGender">
+                <option value="">اختر النوع</option>
+                <option value="male">ذكر</option>
+                <option value="female">أنثى</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="guardianBirthDate">تاريخ ميلاد ولي الأمر:</label>
+              <input type="date" id="guardianBirthDate" name="guardianBirthDate">
+            </div>
+
+            <div class="form-group">
+              <label for="relationshipType">صلة القرابة:</label>
+              <select id="relationshipType" name="relationshipType">
+                <option value="">اختر صلة القرابة</option>
+                <option value="father">أب</option>
+                <option value="mother">أم</option>
+                <option value="brother">أخ</option>
+                <option value="sister">أخت</option>
+                <option value="other">أخرى</option>
+              </select>
+            </div>
+
+            <div class="form-group" id="otherRelationship" style="display: none;">
+              <label for="otherRelationshipText">حدد صلة القرابة:</label>
+              <input type="text" id="otherRelationshipText" name="otherRelationshipText">
+            </div>
+
+            <div class="form-group">
+              <label for="childrenCount">عدد الأبناء المشتركين:</label>
+              <input type="number" id="childrenCount" name="childrenCount" min="1" max="10" value="1">
+            </div>
+          </div>
+
+          <!-- تفاصيل الدراسة -->
+          <div id="study-details" class="form-section" style="display: none;">
+            <h3>تفاصيل الدراسة</h3>
+            <div class="form-group">
+              <label for="sessionsPerMonth">عدد الحصص في الشهر:</label>
+              <input type="number" id="sessionsPerMonth" name="sessionsPerMonth" min="1" max="30" required>
+              <small>سعر الحصة: 35 جنيه</small>
+            </div>
+
+            <!-- معلومات التكلفة -->
+            <div class="cost-info">
+              <h4>التكلفة الشهرية</h4>
+              <p>سعر الحصة: <span>35</span> جنيه</p>
+              <p>عدد الحصص في الشهر: <span id="monthly-sessions">0</span></p>
+              <p>التكلفة الأساسية: <span id="base-cost">0</span> جنيه</p>
+              <p id="discount-info" style="display: none;">الخصم (<span id="discount-percentage">0</span>%): <span id="discount-amount">0</span> جنيه</p>
+              <p class="total-cost">التكلفة النهائية: <span id="final-cost">0</span> جنيه</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-group contact-phone-group">
+          <label for="contact-phone">رقم الهاتف:</label>
+          <input type="tel" id="contact-phone" name="contact-phone" required dir="ltr">
+          <small class="note">سيتم استخدام هذا الرقم للتواصل معك وإرسال رسائل مهمة. يجب التحقق من الرقم.</small>
+
+          <div class="verification-methods" style="display: none;">
+            <label>طريقة التحقق:</label>
+            <select id="verification-method">
+              <option value="sms">رسالة نصية SMS</option>
+              <option value="call">مكالمة هاتفية</option>
+              <option value="whatsapp">رسالة واتساب</option>
+            </select>
+            <button type="button" id="verify-phone-btn" class="secondary-button">تحقق من رقم الهاتف</button>
+          </div>
+
+          <div id="verification-step" class="verification-step">
+            <p>تم إرسال رمز التحقق. يرجى إدخال الرمز المكون من 6 أرقام:</p>
+            <div class="otp-input-container">
+              <input type="text" maxlength="1" class="otp-input" data-index="1">
+              <input type="text" maxlength="1" class="otp-input" data-index="2">
+              <input type="text" maxlength="1" class="otp-input" data-index="3">
+              <input type="text" maxlength="1" class="otp-input" data-index="4">
+              <input type="text" maxlength="1" class="otp-input" data-index="5">
+              <input type="text" maxlength="1" class="otp-input" data-index="6">
+            </div>
+            <input type="hidden" id="verificationCode">
+            <div class="verification-timer">
+              <p>يمكنك طلب رمز جديد بعد: <span id="timer">02:00</span></p>
+            </div>
+            <div class="verification-actions">
+              <button type="button" id="verify-code-button" class="primary-button">تحقق من الرمز</button>
+              <button type="button" id="resend-code" class="secondary-button" disabled>إعادة إرسال الرمز</button>
+            </div>
+          </div>
+
+          <div id="phone-verified" class="success-message" style="display: none;">
+            <p>✓ تم التحقق من رقم الهاتف بنجاح</p>
+          </div>
+
+          <div class="checkbox-group">
+            <p>حدد طرق التواصل المفضلة عبر هذا الرقم:</p>
+            <label><input type="checkbox" name="phone-methods" value="calls"> المكالمات الهاتفية</label>
+            <label><input type="checkbox" name="phone-methods" value="whatsapp"> واتساب</label>
+            <label><input type="checkbox" name="phone-methods" value="telegram"> تيليجرام</label>
+          </div>
+        </div>
+
+        <button type="submit" class="primary-button">تحديث المعلومات</button>
+      </form>
+    </div>
+  </main>
+
+  <footer>
+    <p>&copy; 2025 منصة مفتاح العلوم. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <script src="loadNav.js"></script>
+  <script src="auth-guard.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/intl-tel-input@23.3.2/build/js/intlTelInput.min.js"></script>
+  <script type="module">
+    import { initializePhoneVerification, initializeVerificationListeners } from './phone-verification.js';
+
+    // تحميل بيانات المستخدم عند فتح الصفحة
+    async function loadUserProfile() {
+      const token = localStorage.getItem('auth_token');
+      if (!token) {
+        window.location.href = '/login.html';
+        return;
+      }
+
+      try {
+        const response = await fetch('/.netlify/functions/get-profile', {
+          headers: {
+            'Authorization': `Bearer ${token}`
+          }
+        });
+
+        if (!response.ok) {
+          throw new Error('فشل تحميل البيانات');
+        }
+
+        const data = await response.json();
+        const { user } = data;
+
+        // ملء النموذج بالبيانات الحالية
+        document.getElementById('userPicture').src = user.googlePicture || 'default-avatar.png';
+        document.getElementById('userName').textContent = user.fullName;
+        document.getElementById('userEmail').textContent = user.email;
+        document.getElementById('fullName').value = user.fullName;
+
+        // تهيئة حقل رقم الهاتف
+        const phoneInput = document.getElementById('contact-phone');
+        if (phoneInput && user.phone) {
+          phoneInput.value = user.phone;
+          const iti = initializePhoneVerification(phoneInput);
+          if (iti) {
+            initializeVerificationListeners(iti);
+          }
+        }
+
+        document.getElementById('userType').value = user.userType;
+      } catch (error) {
+        console.error('خطأ:', error);
+        alert('حدث خطأ أثناء تحميل البيانات');
+      }
+    }
+
+    // تسجيل الخروج
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      if (confirm('هل أنت متأكد من رغبتك في تسجيل الخروج؟')) {
+        try {
+          const response = await fetch('/.netlify/functions/logout', {
+            method: 'POST',
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+            }
+          });
+
+          if (!response.ok) {
+            throw new Error('فشل تسجيل الخروج');
+          }
+
+          localStorage.removeItem('auth_token');
+          sessionStorage.clear();
+          window.location.href = '/login.html?message=تم تسجيل الخروج بنجاح';
+        } catch (error) {
+          console.error('خطأ:', error);
+          alert('حدث خطأ أثناء تسجيل الخروج');
+        }
+      }
+    });
+
+    // تهيئة التحقق من رقم الهاتف عند تحميل الصفحة
+    document.addEventListener('DOMContentLoaded', () => {
+      loadUserProfile();
+
+      const phoneInput = document.getElementById('contact-phone');
+      if (phoneInput) {
+        const iti = initializePhoneVerification(phoneInput);
+        if (iti) {
+          initializeVerificationListeners(iti);
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>

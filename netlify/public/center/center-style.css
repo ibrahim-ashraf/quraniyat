@@ -1,0 +1,473 @@
+@import url('https://fonts.googleapis.com/css2?family=Amiri&display=swap');
+
+/* أنماط عامة */
+body {
+  margin: 0;
+  font-family: 'Amiri', serif;
+  line-height: 1.6;
+  background-color: #f9f9f9;
+  color: #333;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* رأس الصفحة */
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #004080;
+  color: white;
+  padding: 1rem 0;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.logo {
+  height: 50px;
+}
+
+/* التنقل === */
+nav ul {
+  list-style: none;
+  display: flex;
+  gap: 1.5rem;
+  padding: 0;
+  margin: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.nav-item {
+  color: white;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.nav-item:hover {
+  color: #ffcc00;
+}
+
+/* أنماط محتوى الصفحة */
+.page-content {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.subtitle {
+  font-size: 1.2rem;
+  color: #555;
+  display: block;
+}
+
+h2 {
+  color: #007b5e;
+  margin-top: 2rem;
+  border-bottom: 2px solid #e0e0e0;
+  padding-bottom: 0.3rem;
+}
+
+ul,
+ol {
+  padding-right: 1.5rem;
+}
+
+li {
+  margin-bottom: 0.5rem;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1rem 0;
+  font-size: 1rem;
+}
+
+th,
+td {
+  border: 1px solid #ccc;
+  padding: 0.6rem;
+  text-align: center;
+}
+
+th {
+  background-color: #eee;
+}
+
+footer {
+  margin-top: 3rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+/* أنماط النماذج */
+.form-section {
+  background: var(--bg-surface);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.form-section h4 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+}
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1rem;
+}
+
+.form-group {
+  margin-bottom: 1rem;
+}
+
+.form-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.form-input,
+.form-select,
+.form-textarea {
+  width: 100%;
+  padding: 0.5rem;
+  border: 1px solid var(--border-color);
+  border-radius: 4px;
+  font-family: inherit;
+}
+
+.form-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-input:focus,
+.form-select:focus,
+.form-textarea:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+/* أزرار */
+.btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background: var(--primary-color);
+  color: white;
+  text-decoration: none;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background: var(--primary-dark);
+}
+
+.btn-danger {
+  background: var(--error-color);
+}
+
+.btn-danger:hover {
+  background: #c82333;
+}
+
+/* البطاقات */
+.card {
+  background: var(--bg-surface);
+  border-radius: 8px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.card-title {
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.card-text {
+  margin-bottom: 1rem;
+  color: var(--text-light);
+}
+
+/* الشبكة */
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+/* صفحة الاتصال */
+.contact-section {
+  background: var(--bg-surface);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.contact-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.contact-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  transition: background 0.3s ease;
+}
+
+.contact-item:last-child {
+  border-bottom: none;
+}
+
+.contact-item:hover {
+  background: var(--bg-hover);
+}
+
+.contact-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.contact-link:hover {
+  color: var(--primary-dark);
+}
+
+.map-container {
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 1rem;
+}
+
+.map-container iframe {
+  width: 100%;
+  height: 400px;
+  border: none;
+}
+
+/* صفحة المؤسس */
+.profile-section {
+  background: var(--bg-surface);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.profile-image {
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin: 0 auto 1.5rem;
+  display: block;
+}
+
+.title {
+  color: var(--primary-color);
+  text-align: center;
+  margin-bottom: 0.5rem;
+}
+
+.subtitle {
+  color: var(--text-light);
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.section-title {
+  color: var(--primary-color);
+  margin: 1.5rem 0 1rem;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem;
+}
+
+.list li {
+  position: relative;
+  padding-right: 1.5rem;
+  margin-bottom: 0.5rem;
+  line-height: 1.6;
+}
+
+.list li::before {
+  content: "•";
+  color: var(--primary-color);
+  position: absolute;
+  right: 0;
+}
+
+/* رسائل الخطأ */
+.error {
+  color: var(--error-color);
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+}
+
+/* التذييل */
+footer {
+  background-color: #222;
+  color: #ccc;
+  padding: 1rem;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+footer ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 0.5rem;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+}
+
+footer .nav-item {
+  color: #ccc;
+}
+
+footer .nav-item:hover {
+  color: white;
+}
+
+/* صفحة اللوائح التنظيمية */
+.regulations-section {
+  background: var(--bg-surface);
+  border-radius: 8px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.regulations-section h3 {
+  color: var(--primary-color);
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+}
+
+.regulations-section ol {
+  padding-right: 1.5rem;
+}
+
+.regulations-section ul {
+  list-style: disc;
+  padding-right: 2rem;
+  margin: 1rem 0;
+}
+
+.regulations-section li {
+  margin-bottom: 0.75rem;
+  line-height: 1.6;
+}
+
+.fees-table {
+  width: 100%;
+  margin: 1.5rem 0;
+  border-collapse: collapse;
+}
+
+.fees-table th,
+.fees-table td {
+  border: 1px solid var(--border-color);
+  padding: 0.75rem;
+  text-align: center;
+}
+
+.fees-table th {
+  background-color: var(--primary-color);
+  color: white;
+}
+
+.fees-table tr:nth-child(even) {
+  background-color: var(--bg-hover);
+}
+
+/* تاريخ تحديث اللوائح */
+.update-date {
+  text-align: center;
+  font-style: italic;
+  color: var(--text-light);
+  border-top: 1px solid var(--border-color);
+  margin-top: 3rem;
+  padding: 1rem;
+}
+
+.update-date p {
+  margin: 0;
+}
+
+/* نتائج التحقق من الأسماء */
+.name-validation-result {
+  margin-top: 0.5rem;
+}
+
+.name-validation-result .alert {
+  padding: 0.5rem 1rem;
+  margin: 0;
+  font-size: 0.9rem;
+}
+
+.name-validation-result .alert-success {
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
+}
+
+.name-validation-result .alert-warning {
+  background-color: #fff3cd;
+  border-color: #ffeeba;
+  color: #856404;
+}
+
+.name-validation-result .suggestions {
+  margin-top: 0.5rem;
+}
+
+.name-validation-result .suggestions p {
+  margin: 0 0 0.5rem 0;
+  font-weight: bold;
+}
+
+.name-validation-result .btn-link {
+  padding: 0;
+  margin: 0 0.5rem;
+  text-decoration: underline;
+  color: var(--primary-color);
+}
+
+.name-validation-result .btn-link:hover {
+  color: var(--primary-dark);
+}
+
+.name-validation-result .confirm-btn {
+  display: block;
+  margin-top: 0.5rem;
+  color: #666;
+}

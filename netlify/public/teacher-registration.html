@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>تسجيل معلم جديد - مفتاح العلوم</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/css/intlTelInput.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/17.0.8/js/intlTelInput.min.js"></script>
+</head>
+
+<body>
+  <div id="nav-placeholder"></div>
+
+  <main class="container">
+
+    <h1>تسجيل معلم جديد</h1>
+
+    <form id="teacher-registration-form" class="registration-form">
+      <div class="form-group">
+        <label for="fullName">الاسم الكامل:</label>
+        <input type="text" id="fullName" name="fullName" required minlength="3" maxlength="50" pattern="^[\u0600-\u06FF\s]{3,}$" title="يرجى إدخال الاسم باللغة العربية (3 أحرف على الأقل)">
+      </div>
+
+      <div class="form-group">
+        <label for="gender">النوع:</label>
+        <select id="gender" name="gender" required>
+          <option value="">اختر النوع</option>
+          <option value="male">ذكر</option>
+          <option value="female">أنثى</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="teacher-birthdate">تاريخ الميلاد:</label>
+        <input type="date" id="teacher-birthdate" name="birthDate" required>
+        <small class="note"></small>
+      </div>
+
+      <div class="form-group">
+        <label for="nationalId">رقم الهوية/جواز السفر:</label>
+        <input type="text" id="nationalId" name="nationalId" required pattern="[0-9]+" minlength="10" maxlength="20" title="يرجى إدخال أرقام فقط">
+      </div>
+
+      <div class="form-group">
+        <label for="specialization">التخصص:</label>
+        <input type="text" id="specialization" name="specialization" required>
+      </div>
+
+      <div class="form-group">
+        <label for="department">القسم:</label>
+        <select id="department" name="department" required>
+          <option value="">اختر القسم</option>
+          <option value="quran">القرآن الكريم</option>
+          <option value="arabic">اللغة العربية</option>
+          <option value="islamic">العلوم الإسلامية</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="country">الدولة:</label>
+        <select id="country" name="country" required>
+          <option value="">اختر الدولة</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="location">العنوان:</label>
+        <input type="text" id="location" name="location" required>
+        <button type="button" id="get-location" class="secondary-button">
+          <i class="fas fa-map-marker-alt"></i> تحديد الموقع
+        </button>
+      </div>
+
+      <div class="form-group">
+        <label for="contact-email">البريد الإلكتروني للتواصل:</label>
+        <input type="email" id="contact-email" name="contact-email" required>
+        <div class="checkbox-group">
+          <label>
+            <input type="checkbox" id="use-account-email" name="use-account-email">
+            استخدام نفس البريد الإلكتروني المرتبط بالحساب
+          </label>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="contact-phone">رقم الهاتف:</label>
+        <input type="tel" id="contact-phone" name="contact-phone" required pattern="[0-9]{10,15}" maxlength="15" dir="ltr" title="يرجى إدخال رقم هاتف صحيح يتكون من 10-15 رقم">
+      </div>
+
+      <div class="form-group">
+        <label for="notes">ملاحظات إضافية (اختياري):</label>
+        <textarea id="notes" name="notes" rows="3" placeholder="مثال: تخصصات أخرى، خبرات تدريس سابقة، أو أي معلومات إضافية ترغب في إضافتها"></textarea>
+      </div>
+
+      <button type="submit" class="primary-button">إكمال التسجيل</button>
+    </form>
+  </main>
+
+  <script src="loadNav.js" type="module"></script>
+  <script src="teacher-registration.js" type="module"></script>
+</body>
+
+</html>
