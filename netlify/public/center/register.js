@@ -214,6 +214,14 @@ async function handleFormSubmit(event) {
     return;
   }
 
+  // تعطيل زر الإرسال لمنع التكرار
+  const submitButton = document.getElementById('submitBtn');
+  submitButton.disabled = true;
+  submitButton.textContent = 'جاري التسجيل...';
+  submitButton.classList.add('disabled');
+  submitButton.classList.remove('btn-primary');
+  submitButton.classList.add('btn-secondary');
+
   // جمع البيانات
   const formData = {
     parent: {
