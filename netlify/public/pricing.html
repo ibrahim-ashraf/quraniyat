@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="author" content="">
+  <meta name="robots" content="index, follow">
+
+  <meta property="og:title" content="">
+  <meta property="og:description" content="">
+
+  <meta name="twitter:title" content="">
+  <meta name="twitter:description" content="">
+
+  <title>التسعير</title>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <header>
+    <div id="nav-container"></div>
+  </header>
+
+  <h1>خطط التسعير</h1>
+
+  <!-- اختيار الدولة -->
+  <label for="country-select">الدولة:</label>
+  <select id="country-select" name="country">
+    <option value="">جارٍ تحديد دولتك...</option>
+  </select>
+
+  <!-- اختيار المادة -->
+  <label for="subject">المادة:</label>
+  <select id="subject" name="subject">
+    <option value="">اختر المادة</option>
+  </select>
+
+  <!-- اختيار القسم -->
+  <label for="department">القسم:</label>
+  <select id="department" name="department">
+    <option value="">اختر القسم</option>
+  </select>
+
+  <!-- اختيار عدد الحصص -->
+  <label for="sessions">عدد الحصص الشهرية:</label>
+  <select id="sessions" name="sessions">
+    <option value="">اختر العدد</option>
+  </select>
+
+  <!-- تفاصيل التسعير -->
+  <div id="pricing-details" style="display: none;">
+    <p>مدة الحصة: <span id="session-duration"></span> دقيقة</p>
+    <p>السعر الشهري: <span id="program-price"></span></p>
+  </div>
+
+  <!-- ملاحظة -->
+  <p>
+    ملاحظة: يتم تحديد الأسعار ثابتة بالجنيه المصري، ويتم تحويلها للدول الأخرى حسب القوى الشرائية، وفقا لبيانات البنك الدولي المتاحة في وقت الاستعلام.
+  </p>
+
+  <!-- حقوق الطبع والنشر -->
+  <footer>
+    <p>© 2025 مفتاح العلوم. جميع الحقوق محفوظة.</p>
+  </footer>
+
+  <!-- ربط ملف JavaScript -->
+  <script type="module" src="loadNav.js"></script>
+  <script type="module" src="pricing.js"></script>
+</body>
+
+</html>

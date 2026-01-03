@@ -49,7 +49,7 @@ exports.handler = async (event, context) => {
     });
 
     const payload = ticket.getPayload();
-
+    console.log('Payload:', payload);
     // التحقق من مجال البريد الإلكتروني إذا كان مطلوباً
     const hostedDomain = payload.hd;
     if (process.env.ALLOWED_DOMAINS) {

@@ -117,7 +117,6 @@ async function handleGoogleSignIn(response) {
     if (!response.credential) {
       throw new Error('فشل في الحصول على بيانات المصادقة من Google');
     }
-
     const result = await networkService.post('auth', {
       credential: response.credential
     }, false);
