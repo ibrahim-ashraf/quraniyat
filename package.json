@@ -12,6 +12,7 @@
     "@sendgrid/mail": "^8.1.5",
     "firebase": "^10.8.0",
     "google-auth-library": "^9.15.1",
+    "google-spreadsheet": "^5.0.2",
     "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.3.0",
     "node-fetch": "^2.7.0",

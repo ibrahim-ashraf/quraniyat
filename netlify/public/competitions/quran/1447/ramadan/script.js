@@ -2,7 +2,7 @@
 const today = new Date();
 
 // تعيين وقت انتهاء التقديم
-const targetDate = new Date('2026-02-11T00:00:00');
+const targetDate = new Date('2026-01-25T00:00:00');
 
 // الحصول على كل الخطوات التي تمثل صفحات النموذج، والتي هي ذات التصنيف step
 const steps = document.querySelectorAll('.step');
@@ -33,13 +33,38 @@ function updateCountdown() {
 
 setInterval(updateCountdown, 1000); // تحديث العد التنازلي كل ثانية
 
+function validateName() {
+  const nameInput = document.getElementById('fullName');
+  const fullName = nameInput.value;
+  if (typeof fullName !== 'string') return false;
+
+  // إزالة المسافات الزائدة
+  const cleanedName = fullName.trim().replace(/\s+/g, ' ');
+
+  // تقسيم الاسم
+  const parts = cleanedName.split(' ');
+
+  // التحقق من كونه رباعيًا
+  if (parts.length < 4) {
+    changeStep(1);
+    alert('يرجى إدخال الاسم الرباعي الكامل (الاسم الأول، اسم الأب، اسم الجد، واسم العائلة).');
+    nameInput.focus();
+    return false;
+  }
+
+  nameInput.value = cleanedName;
+  return cleanedName;
+}
+
 function validatePhoneNumber() {
+  const phoneInput = document.getElementById('phone');
   if (phoneInput.value) {
-    const phoneNumber = intlTelInput.isValidNumber() ? iti.getNumber().replace(/^\+2/, "") : false;
-    // const phoneNumber = intlTelInput.getNumber();
+    const phoneNumber = iti.isValidNumber() ? iti.getNumber().replace(/^\+2/, "") : false;
     console.log(phoneNumber);
     if (!phoneNumber) {
+      changeStep(1);
       alert('تأكد من إدخال رقم هاتف صالح.');
+      phoneInput.focus();
       return false;
     }
     return phoneNumber;
@@ -98,22 +123,24 @@ document.getElementById('quran-memorized-portion').addEventListener('change', fu
 });
 
 // إظهار حقلَي اختيار دراسة التجويد وإخفاؤهما حسب الإجابة
-const tajweedStudy = document.getElementById('tajweed_study');
-const booksWrapper = document.getElementById('tajweed_books_wrapper');
-const levelWrapper = document.getElementById('tajweed_level_wrapper');
+const tajweedStudySelect = document.getElementById('tajweed_study');
+const booksWrapperSelect = document.getElementById('tajweed_books_wrapper');
+const levelWrapperSelect = document.getElementById('tajweed_level_wrapper');
 
-tajweedStudy.addEventListener('change', function () {
+tajweedStudySelect.addEventListener('change', function () {
   if (this.value === 'نعم') {
-    booksWrapper.style.display = 'block';
-    booksWrapper.querySelector('select').setAttribute('required', 'required');
-    levelWrapper.style.display = 'block';
-    levelWrapper.querySelector('select').setAttribute('required', 'required');
+    booksWrapperSelect.style.display = 'block';
+    booksWrapperSelect.querySelector('select').required = true;
+    levelWrapperSelect.style.display = 'block';
+    levelWrapperSelect.querySelector('select').required = true;
   } else {
-    booksWrapper.style.display = 'none';
-    levelWrapper.style.display = 'none';
+    booksWrapperSelect.style.display = 'none';
+    booksWrapperSelect.querySelector('select').required = false;
+    levelWrapperSelect.style.display = 'none';
+    levelWrapperSelect.querySelector('select').required = false;
 
-    document.getElementById('tajweed_books').value = '';
-    document.getElementById('tajweed_level').value = '';
+    booksWrapperSelect.value = '';
+    levelWrapperSelect.value = '';
   }
 });
 
@@ -124,28 +151,32 @@ document.getElementById('registrationForm').addEventListener('submit', async eve
   submitButton.disabled = true;
   submitButton.textContent = 'جاري الإرسال...';
 
-  const birthDate = `${document.getElementById('birth-year-select').value}-${document.getElementById('birth-month-select').value}-${document.getElementById('birth-day-select').value}`;
-
+  const name = validateName();
   const phone = validatePhoneNumber();
-  if (!phone) {
+
+  if (!name || !phone) {
     submitButton.disabled = false;
     submitButton.textContent = 'إرسال';
     return;
   }
 
+  const birthDate = `${document.getElementById('birth-year-select').value}-${document.getElementById('birth-month-select').value}-${document.getElementById('birth-day-select').value}`;
+  const juzCount = document.getElementById("quran-memorized-portion").value;
+  const tajweedStudy = document.getElementById("tajweed_study").value;
+
   const formData = {
     timestamp: new Date().toLocaleString('ar-EG'),
-    fullName: document.getElementById("fullName").value,
+    fullName: name,
     gender: document.getElementById("gender").value,
     birthDate,
     phone,
     educationSystem: document.getElementById("educationSystem").value,
     schoolYear: document.getElementById("schoolYear").value,
-    juzCount: document.getElementById("quran-memorized-portion").value,
+    juzCount,
     surahs: juzCount === '30' ? 'القرآن الكريم كاملا' : Array.from(document.querySelectorAll("input[name='surah']:checked")).map(el => el.value).join('، '),
-    tajweedStudy: document.getElementById("tajweed_study").value,
-    tajweedBooks: tajweedStudy === 'لا' ? '' : document.getElementById("tajweed_books").value,
-    tajweedLevel: tajweedStudy === 'لا' ? '' : document.getElementById("tajweed_level").value,
+    tajweedStudy,
+    tajweedBooks: tajweedStudy === 'لا' ? 'لا ينطبق' : document.getElementById("tajweed_books").value,
+    tajweedLevel: tajweedStudy === 'لا' ? 'لا ينطبق' : document.getElementById("tajweed_level").value,
     participatedBefore: document.getElementById("participatedBefore").value,
   };
 

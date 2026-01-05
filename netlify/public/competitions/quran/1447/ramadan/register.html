@@ -30,7 +30,6 @@
     <h1>المسابقة الرمضانية للقرآن الكريم لعام 1447هـ - 2026م بقرية منية المباشرين وعزبة المنشاوي فقط</h1>
     <div id="competitionIntroContainer">
       <blockquote>وَرَتِّلِ الْقُرْآنَ تَرْتِيلًا</blockquote>
-      <p>أقامها: الأزهري/ عصام محمد أبو زيد.</p>
       <h2>مقدمة عن المسابقة</h2>
       <p>نرحب بكم في المسابقة الرمضانية لحفظ القرآن الكريم، التي تقام في رحاب شهر القرآن المبارك. هذه المسابقة هي فرصة ثمينة للتنافس في أشرف العلوم وأجلِّها (حفظ كتاب الله تعالى). قال الله تعالى: "وَفِي ذَلِكَ فَلْيَتَنَافَسِ الْمُتَنَافِسُونَ" (المطففين: 26)، وقال رسول الله صلى الله عليه وسلم: "خَيْرُكُمْ مَنْ تَعَلَّمَ الْقُرْآنَ وَعَلَّمَهُ".</p>
       <h2>أهداف المسابقة</h2>
@@ -43,7 +42,7 @@
       </ul>
       <p>هل من مشمّر للمنافسة في أشرف ميدان؟ وهل من متسابق لنيل الأجر والثواب؟ فالقرآن يرفع صاحبه في الدنيا والآخرة. بادر بالتسجيل واغتنم هذه الفرصة العظيمة للمشاركة في مسابقتنا القرآنية.</p>
 
-      <p>التقديم مفتوح حتى: (الاثنين، الحادي عشر من شعبان 1446 هـ، العاشر من فبراير 2025 م)، وسيتم إغلاق التقديم تلقائيا.</p>
+      <p>التقديم مفتوح حتى نهاية: (السبت، الخامس من شعبان 1447هـ، الرابع والعشرين من يناير 2026م)، وسيتم إغلاق التقديم تلقائيا.</p>
       <div id="countdown">يتبقى على إغلاق باب التقديم # يوم وـ # ساعة وـ # دقيقة وـ # ثانية.</div>
       <p>يرجى ملء البيانات أدناه بدقة وعناية، وضرورة التحقق منها قبل الإرسال. إذا واجهت أي مشاكل أو صعوبات أثناء التسجيل أو تحتاج إلى أي مساعدة، فلا تتردد في الاتصال بنا.</p>
       <a href="tel:+201094646815">الاتصال بنا عبر الهاتف</a>
@@ -78,7 +77,7 @@
         <label for="schoolYear">السنة الدراسية للعام الدراسي الحالي 2025-2026:</label>
         <select id="schoolYear" name="schoolYear" required>
           <option value="">اختر</option>
-          <!-- <option value="رياض أطفال مستوى أول">رياض أطفال مستوى أول</option> -->
+          <option value="رياض أطفال مستوى أول">رياض أطفال مستوى أول</option>
           <option value="رياض أطفال مستوى ثانٍ">رياض أطفال مستوى ثانٍ</option>
           <option value="الصف الأول الابتدائي">الصف الأول الابتدائي</option>
           <option value="الصف الثاني الابتدائي">الصف الثاني الابتدائي</option>
@@ -113,7 +112,7 @@
           <option value="1">جزء عم</option>
         </select><br>
 
-        <div id="surahsContainer">
+        <div id="surahsContainer" style="display: none;">
           <p>اختر السور التي تحفظها؛ لوضع الأسئلة بدقة شديدة:</p>
           <ol id="surahSelection"></ol>
         </div>
@@ -142,7 +141,7 @@
 
         <!-- 3️⃣ إلى أي باب درست -->
         <div id="tajweed_level_wrapper" style="display: none;">
-          <label for="tajweed_level">إلى أي باب درستَ؟</label><br>
+          <label for="tajweed_level">إلى أي باب درست في الأحكام النظرية؟</label><br>
           <select id="tajweed_level" name="tajweed_level">
             <option value="">اختر</option>
             <option value="نهاية مبادئ علم التجويد">إلى نهاية مبادئ علم التجويد</option>
@@ -169,21 +168,20 @@
         </select><br>
 
         <button type="button" onclick="changeStep(1)">السابق</button>
-        <button type="submit" id="submit" disabled>إرسال</button>
+        <button type="submit" id="submit">إرسال</button>
       </div>
     </form>
   </div>
 
+  <script src="script.js"></script>
   <script src="/js/birthdate.js"></script>
   <script type="module">
     import { initialIntlTelInput } from '/js/intl-tel-input.js';
-    initialIntlTelInput('phone', 'ar');
+    window.iti = await initialIntlTelInput('phone', 'ar');
+
+    createBirthdateDropdown('birthdate-container', 4, 19);
   </script>
 
-  <script src="script.js"></script>
-  <script>
-    createBirthdateDropdown('birthdate-container', 6, 18);
-  </script>
 </body>
 
 </html>
