@@ -11,7 +11,7 @@ exports.handler = async (event, context) => {
 
   sgMail.setApiKey(sendgridApiKey);
   const msg = {
-    from: 'quraniyat.platform@gmail.com',
+    from: 'meftah.aloloom@gmail.com',
     to,
     subject,
     text,

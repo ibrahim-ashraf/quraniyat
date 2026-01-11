@@ -1,22 +1,15 @@
-const scriptUrl = 'https://script.google.com/macros/s/AKfycbxtzrRa277zDZA36SqeQaXFRDmqApeyiplct3oQhR_BOyo6HMFIWDTZK2sFL_DJVND-Lw/exec';
-const spreadsheetId = '127292rLXgw8l6GBPHT_NZBx7rnbwZkniqrQFtxv3ams';
-const sheetTitle = 'بيانات نموذج التقديم';
-
 const fetch = require('node-fetch');
 const { GoogleSpreadsheet } = require('google-spreadsheet');
 const { JWT } = require('google-auth-library');
 
 exports.handler = async (event, context) => {
-    if (event.httpMethod !== 'POST') {
-        return {
-            statusCode: 405,
-            body: JSON.stringify({ message: 'Method Not Allowed' }),
-        };
-    }
-
+    const baseURL = process.env.URL;
     try {
         const email = process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL;
         const key = process.env.GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n');
+
+        const spreadsheetId = '127292rLXgw8l6GBPHT_NZBx7rnbwZkniqrQFtxv3ams';
+        const sheetTitle = 'بيانات نموذج التقديم';
 
         const auth = new JWT({
             email,
@@ -31,15 +24,14 @@ exports.handler = async (event, context) => {
         const sheet = doc.sheetsByTitle[sheetTitle];
 
         const data = Object.values(JSON.parse(event.body));
-
+        console.log(data);
         const row = await sheet.addRow(data);
 
-        const registrationNumber = row.rowNumber - 1;
-
         const emailData = {
-            to: ['ibrahimashrafabdo@gmail.com', 'alcoranalkreem12345@gmail.com', 'a.amer.gadalla@gmail.com'],
-            subject: `تسجيل جديد في المسابقة الرمضانية للقرآن الكريم برقم (${registrationNumber})`,
-            textBody: `
+            // to: ['ibrahimashrafabdo@gmail.com', 'alcoranalkreem12345@gmail.com', 'mostafaelraei3@gmail.com'],
+            to: ['ibrahimashrafabdo@gmail.com'],
+            subject: `تسجيل جديد في المسابقة الرمضانية للقرآن الكريم برقم ${row.rowNumber - 1}`,
+            text: `
 السلام عليكم ورحمة الله وبركاته
 
 تم استلام تسجيل جديد في المسابقة الرمضانية للقرآن الكريم 1446هـ
@@ -57,17 +49,14 @@ exports.handler = async (event, context) => {
 ------------------
 عدد الأجزاء المحفوظة: ${data[7]}
 السور المحفوظة: ${data[8]}
-دراسة علم التجويد: ${data[9]}
-المتون المحفوظة: ${data[10]}
-نهاية الدراسة النظرية: ${data[11]}
-المشاركة السابقة: ${data[12]}
+المشاركة السابقة: ${data[9]}
 
 تم التسجيل بتاريخ: ${data[0]}
 
 مع خالص التحيات
 نظام التسجيل الآلي - المسابقة الرمضانية للقرآن الكريم
 `,
-            htmlBody: `<!DOCTYPE html>
+            html: `<!DOCTYPE html>
       <html dir="rtl" lang="ar">
       <head>
           <meta charset="UTF-8">
@@ -161,7 +150,7 @@ exports.handler = async (event, context) => {
                   <span>${data[8]}</span>
               </div>
               <div class="info-row">
-                  <span class="label">دراسة علم التجويد:</span>
+                  <span class="label">دراسة علم التجويد؟</span>
                   <span>${data[9]}</span>
               </div>
               <div class="info-row">
@@ -192,12 +181,11 @@ exports.handler = async (event, context) => {
       </html>`
         };
 
-        await fetch(scriptUrl, {
+        await fetch(`${baseURL}/.netlify/functions/sendEmail`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(emailData),
         });
-
         return {
             statusCode: 200,
             body: JSON.stringify({ message: '🌟 مبارك! تم التسجيل! لقد وصلت بياناتكم بنجاح إلى القائمين على المسابقة. 📝✨' }),
