@@ -2,7 +2,7 @@
 const today = new Date();
 
 // تعيين وقت انتهاء التقديم
-const targetDate = new Date('2026-01-25T00:00:00');
+const targetDate = new Date('2026-01-31T00:00:00');
 
 // الحصول على كل الخطوات التي تمثل صفحات النموذج، والتي هي ذات التصنيف step
 const steps = document.querySelectorAll('.step');
