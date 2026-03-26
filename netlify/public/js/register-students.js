@@ -1,4 +1,5 @@
 import { getIpapiData } from "./ipapi.js";
+import { initialIntlTelInput } from "./intl-tel-input.js";
 import { handleError } from './utils.js';
 import networkService from './network-service.js';
 import errorService from './error-service.js';
@@ -6,17 +7,16 @@ import { formatPriceForCountry } from './ppp-service.js';
 
 let userCountry = null;
 let iti = null;
-let pricingData = null;
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
     // جلب بيانات ipapi
-    const ipData = await getIpapiData();
-    userCountry = ipData ? ipData.country_code : null;
+    // const ipData = await getIpapiData();
+    // userCountry = ipData ? ipData.country_code : null;
+    userCountry = 'eg';
 
     await Promise.all([
-      loadCountries(),
-      loadPricingData()
+      // loadCountries()
     ]);
 
     if (userCountry) {
@@ -24,48 +24,69 @@ document.addEventListener('DOMContentLoaded', async () => {
       countrySelect.value = userCountry.toLowerCase();
 
       // إضافة مستمع الأحداث لعدم إمكانية تغيير الدولة
-      countrySelect.addEventListener('change', () => {
-        countrySelect.value = userCountry.toLowerCase();
-      });
+      // countrySelect.addEventListener('change', () => {
+      //   countrySelect.value = userCountry.toLowerCase();
+      // });
 
       // تهيئة intl-tel-input
-      const phoneInput = document.getElementById('phone-input');
-      iti = window.intlTelInput(phoneInput, {
-        i18n: ar,
-        initialCountry: userCountry.toLowerCase(),
-        strictMode: true,
-        onlyCountries: [userCountry.toLowerCase()],
-        allowDropdown: false,
-        showFlags: true,
-        separateDialCode: false,
-        loadUtils: () => import("https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js"),
-      });
-    }    // Initialize form submission
+      iti = await initialIntlTelInput('phone-input', 'ar', userCountry.toLowerCase());
+    }
+
+    // Initialize form submission
     document.getElementById('student-registration-form').addEventListener('submit', handleSubmit);
+
+    let packagesData = [];
+
+    const packageSelect = document.getElementById("package-select");
+    const durationSelect = document.getElementById("session-duration-select");
+
+    // تحميل الباقات
+    async function loadPackages() {
+      const res = await fetch("/data/packages.json");
+      packagesData = await res.json();
+
+      packageSelect.innerHTML = '<option value="">-- اختر الباقة --</option>';
+
+      packagesData.forEach(pkg => {
+        const option = document.createElement("option");
+        option.value = pkg.id;
+        option.textContent = pkg.name;
+        packageSelect.appendChild(option);
+      });
+    }
+
+    // تحديث المدد
+    function updateDurations(packageId) {
+      durationSelect.innerHTML = '<option value="">-- اختر الباقة أولًا --</option>';
+
+      const selectedPackage = packagesData.find(p => p.id === packageId);
+      if (!selectedPackage) return;
+
+      durationSelect.innerHTML = '<option value="">-- اختر مدة الحصة --</option>';
+
+      selectedPackage.durations.forEach(async d => {
+        const durationPrice = d.price;
+        const formattedPrice = await formatPriceForCountry(durationPrice, userCountry);
+        const option = document.createElement("option");
+        option.value = d.value;
+        option.textContent = `${d.label} - ${formattedPrice}`;
+        option.dataset.price = d.price;
+
+        durationSelect.appendChild(option);
+      });
+    }
+
+    // عند تغيير الباقة
+    packageSelect.addEventListener("change", () => {
+      updateDurations(packageSelect.value);
+    });
+
+    // تشغيل أولي
+    loadPackages();
   } catch (error) {
     handleError(error);
   }
 });
-
-function formatArabicDate(date) {
-  // أسماء الأيام بالعربية
-  const days = [
-    "الأحد", "الإثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"
-  ];
-
-  // أسماء الأشهر بالعربية
-  const months = [
-    "يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو",
-    "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"
-  ];
-
-  const dayName = days[date.getDay()];       // اسم اليوم
-  const day = date.getDate();                // رقم اليوم
-  const monthName = months[date.getMonth()]; // اسم الشهر
-  const year = date.getFullYear();           // السنة
-
-  return `${dayName}، ${day} ${monthName} ${year}`;
-}
 
 async function loadCountries() {
   try {
@@ -90,101 +111,6 @@ async function loadCountries() {
   }
 }
 
-async function loadPricingData() {
-  try {
-    const response = await fetch('/pricing.json');
-    pricingData = await response.json();
-    addSpecialties();
-  } catch (error) {
-    handleError(error);
-  }
-}
-
-function addSpecialties() {
-  const specialtiesContainer = document.getElementById('specialties-container');
-
-  Object.values(pricingData.subjects).forEach(subject => {
-    // حاوية التخصص
-    const specialtyDiv = document.createElement("div");
-    specialtyDiv.className = "specialty";
-
-    // عنوان التخصص
-    const h3 = document.createElement('h3');
-    h3.textContent = subject.name;
-    specialtyDiv.appendChild(h3);
-
-    // الأقسام
-    Object.values(subject.departments).forEach(dept => {
-      const div = document.createElement("div");
-      div.className = "department";
-
-      // عنوان القسم
-      const h4 = document.createElement("h4");
-      h4.textContent = dept.name;
-      div.appendChild(h4);
-
-      // وصف القسم
-      const pDesc = document.createElement("p");
-      pDesc.textContent = dept.description;
-      div.appendChild(pDesc);
-
-      // مدة الحصة
-      const pDuration = document.createElement("p");
-      pDuration.textContent = `⏱ مدة الحصة: ${dept.session_duration} دقيقة`;
-      div.appendChild(pDuration);
-
-      // select عدد الحصص
-      const select = document.createElement("select");
-      select.innerHTML = `<option value="">اختر عدد الحصص</option>`;
-      pricingData.sessions_per_month.forEach(async s => {
-        // الحصول على السعر الأساسي وتحويله حسب القوة الشرائية
-        const basePrice = pricingData.base_prices[dept.key][s];
-        const formattedPrice = await formatPriceForCountry(basePrice, userCountry);
-
-        const opt = document.createElement("option");
-        opt.value = s;
-        opt.textContent = `${s} حصص (${formattedPrice})`;
-        select.appendChild(opt);
-      });
-      div.appendChild(select);
-
-      // checkbox اختيار القسم
-      const checkbox = document.createElement("input");
-      checkbox.type = "checkbox";
-      checkbox.disabled = true; // يبدأ معطل
-      div.appendChild(checkbox);
-
-      const label = document.createElement("label");
-      label.textContent = " اختر هذا القسم";
-      div.appendChild(label);
-
-      // تمكين/تعطيل checkbox عند اختيار عدد الحصص
-      select.addEventListener("change", () => {
-        if (select.value === "") {
-          checkbox.disabled = true;
-          checkbox.checked = false;
-        } else {
-          checkbox.disabled = false;
-        }
-      });
-
-      // السماح بقسم واحد فقط داخل نفس التخصص
-      checkbox.addEventListener("change", () => {
-        if (checkbox.checked) {
-          specialtyDiv.querySelectorAll("input[type=checkbox]").forEach(cb => {
-            if (cb !== checkbox) cb.checked = false;
-          });
-        }
-      });
-
-      specialtyDiv.appendChild(div);
-    });
-
-    // إضافة التخصص إلى الحاوية
-    specialtiesContainer.appendChild(specialtyDiv);
-  });
-}
-
 async function handleSubmit(event) {
   event.preventDefault();
 
@@ -192,27 +118,55 @@ async function handleSubmit(event) {
     const form = event.target;
     const formData = new FormData(form);
 
-    const profileData = {
-      userType: 'student',
-      name: formData.get('name'),
-      gender: formData.get('gender'),
-      birthDate: formData.get('birthDate'),
-      nationality: formData.get('nationality'),
-      country: formData.get('residence-country'),
-      location: formData.get('location'),
-      email: formData.get('email'),
+    const data = {
+      type: 'students',
+      name: formData.get("name"),
+      gender: formData.get("gender"),
+      birthDate: `${document.getElementById("birth-year-select").value}-${document.getElementById("birth-month-select").value}-${document.getElementById("birth-day-select").value}`,
+      nationality: formData.get("nationality"),
+      residence: formData.get("residence"),
       phone: iti.getNumber(),
-      subjects: {
-        name: formData.get('subject'),
-        department: formData.get('department'),
-        sessionsPerMonth: parseInt(formData.get('sessions')),
-        platform: formData.get('platform'),
-        schedule: getSelectedSchedule()
-      }
+      email: formData.get("email"),
+      package: formData.get("package"),
+      sessionDuration: formData.get("sessionDuration"),
+      price: document.getElementById("session-duration-select").selectedOptions[0].dataset.price || null,
+      notes: formData.get("notes")
     };
+    console.log("Submitting data:", data);
+    const response = await fetch("/.netlify/functions/register", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
 
-    await updateUserProfile(profileData);
-    window.location.href = '/student-dashboard.html';
+    if (response.ok) {
+
+      try {
+        const response = await emailjs.send(
+          "service_hh25ffv",
+          "template_fnzdfrc",
+          data
+        );
+
+        console.log("Email sent:", response.status);
+
+        // =========================
+        // 6️⃣ نجاح الإرسال
+        // =========================
+        alert("تم التسجيل بنجاح 🌿 سيتم التواصل معك قريبًا");
+
+        form.reset();
+
+      } catch (error) {
+        console.error("EmailJS Error:", error);
+        alert("حدث خطأ أثناء التسجيل، حاول مرة أخرى لاحقًا");
+      }
+
+    } else {
+      const errorText = await response.text();
+      throw new Error(`فشل التسجيل: ${errorText}`);
+    }
+
   } catch (error) {
     handleError(error);
   }

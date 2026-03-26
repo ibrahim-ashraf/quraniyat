@@ -175,7 +175,6 @@ table {
   border-collapse: collapse;
   margin: 1rem 0;
 }
-}
 
 th,
 td {
@@ -192,4 +191,39 @@ main {
   margin: 2rem auto;
   max-width: 600px;
   padding: 0 1rem;
+}
+
+main h1 {
+  margin-bottom: 0.5rem;
+}
+
+main p {
+  margin-bottom: 2rem;
+}
+
+/* أزرار اختيار نوع التسجيل */
+.register-options {
+  display: flex;
+  flex-direction: column;
+  /* عمودي */
+  gap: 1rem;
+  /* مسافة بين الأزرار */
+  margin-top: 2rem;
+}
+
+.register-options a {
+  display: block;
+  text-align: center;
+  padding: 1rem;
+  background-color: #3498db;
+  color: #fff;
+  border-radius: 8px;
+  font-size: 1.2rem;
+  font-weight: bold;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.register-options a:hover {
+  background-color: #2980b9;
+  transform: scale(1.02);
 }

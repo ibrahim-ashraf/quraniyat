@@ -1,0 +1,90 @@
+[
+  {
+    "id": "pkg1",
+    "name": "الباقة الأولى (8 حلقات شهريًا)",
+    "sessionsPerMonth": 8,
+    "durations": [
+      {
+        "value": 30,
+        "label": "نصف ساعة",
+        "price": 240
+      },
+      {
+        "value": 40,
+        "label": "40 دقيقة",
+        "price": 320
+      },
+      {
+        "value": 60,
+        "label": "ساعة كاملة",
+        "price": 480
+      }
+    ]
+  },
+  {
+    "id": "pkg2",
+    "name": "الباقة الثانية (12 حلقة شهريًا)",
+    "sessionsPerMonth": 12,
+    "durations": [
+      {
+        "value": 30,
+        "label": "نصف ساعة",
+        "price": 360
+      },
+      {
+        "value": 40,
+        "label": "40 دقيقة",
+        "price": 480
+      },
+      {
+        "value": 60,
+        "label": "ساعة كاملة",
+        "price": 720
+      }
+    ]
+  },
+  {
+    "id": "pkg3",
+    "name": "الباقة الثالثة (16 حلقة شهريًا)",
+    "sessionsPerMonth": 16,
+    "durations": [
+      {
+        "value": 30,
+        "label": "نصف ساعة",
+        "price": 480
+      },
+      {
+        "value": 40,
+        "label": "40 دقيقة",
+        "price": 640
+      },
+      {
+        "value": 60,
+        "label": "ساعة كاملة",
+        "price": 960
+      }
+    ]
+  },
+  {
+    "id": "pkg4",
+    "name": "الباقة الرابعة (20 حلقة شهريًا)",
+    "sessionsPerMonth": 20,
+    "durations": [
+      {
+        "value": 30,
+        "label": "نصف ساعة",
+        "price": 600
+      },
+      {
+        "value": 40,
+        "label": "40 دقيقة",
+        "price": 800
+      },
+      {
+        "value": 60,
+        "label": "ساعة كاملة",
+        "price": 1200
+      }
+    ]
+  }
+]

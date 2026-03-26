@@ -1,6 +1,6 @@
 let itiLibPromise;
 
-export async function initialIntlTelInput(inputId, language = 'ar') {
+export async function initialIntlTelInput(inputId, language = 'ar', initialCountry = 'eg') {
   const input = document.getElementById(inputId);
   if (!input) {
     throw new Error(`Input with id "${inputId}" not found`);
@@ -36,14 +36,14 @@ export async function initialIntlTelInput(inputId, language = 'ar') {
 
   return window.intlTelInput(input, {
     i18n: translation,
-    onlyCountries: ['eg'],
+    onlyCountries: [initialCountry],
     allowDropdown: false,
     showFlags: true,
-    initialCountry: 'eg',
+    initialCountry: initialCountry,
     strictMode: true,
     nationalMode: true,
     separateDialCode: false,
-    autoPlaceholder: 'off',
+    // autoPlaceholder: 'off',
     loadUtils: () =>
       import('https://cdn.jsdelivr.net/npm/intl-tel-input@25.3.1/build/js/utils.js'),
   });
