@@ -1,0 +1,13 @@
+{
+    "type": "students",
+    "name": "ا",
+    "gender": "male",
+    "birthDate": "2008-01-01",
+    "nationality": "eg",
+    "residence": "eg",
+    "phone": "+201094646815",
+    "package": "pkg1",
+    "sessionDuration": "30",
+    "price": "240",
+    "termsAccepted": true
+}

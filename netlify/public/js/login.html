@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>تسجيل دخول المشرف</title>
+</head>
+
+<body>
+
+  <h2>تسجيل الدخول</h2>
+
+  <input type="email" id="email" placeholder="الإيميل"><br><br>
+  <input type="password" id="password" placeholder="كلمة المرور"><br><br>
+
+  <button onclick="login()">دخول</button>
+
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+
+  <script>
+    const firebaseConfig = {
+      apiKey: "AIzaSyBANYKsEbQ6wm-hsI_4iDlKZfq2JRZDjuc",
+      authDomain: "meftah-al-oloom.firebaseapp.com",
+      projectId: "meftah-al-oloom",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
+
+    function login() {
+      const email = document.getElementById("email").value;
+      const password = document.getElementById("password").value;
+
+      auth.signInWithEmailAndPassword(email, password)
+        .then(() => {
+          window.location.href = "admin.html";
+        })
+        .catch(err => alert(err.message));
+    }
+  </script>
+
+</body>
+
+</html>

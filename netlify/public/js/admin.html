@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ar">
+
+<head>
+  <meta charset="UTF-8">
+
+  <title>لوحة التحكم</title>
+</head>
+
+<body>
+
+  <h2>لوحة التحكم</h2>
+
+  <button onclick="logout()">تسجيل الخروج</button>
+
+  <hr>
+
+  <h3>البيانات المسجلة</h3>
+  <h3>تسجيل الأطفال</h3>
+  <div id="children"></div>
+
+  <h3>تسجيل البالغين</h3>
+  <div id="adults"></div>
+
+  <!-- Firebase CDN -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+
+  <script>
+    // إعداد Firebase
+    const firebaseConfig = {
+      apiKey: "AIzaSyBANYKsEbQ6wm-hsI_4iDlKZfq2JRZDjuc",
+      authDomain: "meftah-al-oloom.firebaseapp.com",
+      projectId: "meftah-al-oloom",
+    };
+
+    firebase.initializeApp(firebaseConfig);
+
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // حماية الصفحة (لا يدخل إلا أنت)
+    auth.onAuthStateChanged(user => {
+      console.log("Current user:", user);
+      if (!user) {
+        window.location.href = "login.html";
+      }
+    });
+
+    // تسجيل خروج
+    function logout() {
+      auth.signOut().then(() => {
+        window.location.href = "login.html";
+      });
+    }
+
+    // تحميل البيانات
+    function loadData() {
+
+      // الأطفال
+      db.collection("registrations_children").get().then(snapshot => {
+        const container = document.getElementById("children");
+
+        snapshot.forEach(doc => {
+          const d = doc.data();
+
+          container.innerHTML += `
+        <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+          <p><b>ولي الأمر:</b> ${d.guardian?.name || "-"}</p>
+          <p><b>عدد الأطفال:</b> ${d.children?.length || 0}</p>
+        </div>
+      `;
+        });
+      });
+
+      // البالغين
+      db.collection("students").get().then(snapshot => {
+        const container = document.getElementById("adults");
+
+        snapshot.forEach(doc => {
+          const d = doc.data();
+          console.log(d);
+          container.innerHTML += `
+        <div style="border:1px solid #ccc; padding:10px; margin:10px;">
+          <p><b>الاسم:</b> ${d.name || "-"}</p>
+          <p><b>النوع:</b> ${d.gender}</p>
+          <p><b>تاريخ الميلاد:</b> ${new Date(d.birthdate).toLocaleDateString("ar-EG", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}</p>
+          <p><b>الجنسية:</b> ${d.nationality || "-"}</p>
+          <p><b>الإقامة:</b> ${d.residence || "-"}</p>
+          <p><b>الهاتف:</b> ${d.phone || "-"}</p>
+          <p><b>البريد الإلكتروني:</b> ${d.email || "-"}</p>
+          <p><b>الباقة:</b> ${d.package}</p>
+          <p><b>مدة الحصة:</b> ${d.sessionDuration}</p>
+          <p><b>السعر:</b> ${d.price}</p>
+          <p><b>الملاحظات:</b> ${d.notes || "-"}</p>
+          <p><b>الموافقة على الشروط والأحكام:</b> ${d.agreement ? "نعم" : "لا"}</p>
+          <p><b>تاريخ التسجيل:</b> ${new Date(d.createdAt.seconds * 1000).toLocaleString("ar-EG", { weekday: "long", year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit", second: "2-digit", hour12: true })}</p>
+        </div>
+      `;
+        });
+      });
+
+    }
+
+    loadData();
+  </script>
+
+</body>
+
+</html>

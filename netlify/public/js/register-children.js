@@ -1,446 +1,339 @@
-import { getCurrentUser, updateUserProfile } from './auth.js';
+import { getIpapiData } from "./ipapi.js";
+import { initialIntlTelInput } from "./intl-tel-input.js";
 import { handleError } from './utils.js';
-import config from './config.js';
 import networkService from './network-service.js';
 import errorService from './error-service.js';
-import { initializeLocationServices } from './utils.js';
 import { formatPriceForCountry } from './ppp-service.js';
 
-// حدود العمر للأطفال
-const MIN_AGE = 7;
-const MAX_AGE = 18;
-
-let pricingData = null;
+let userCountry = null;
+let iti = null;
+let packagesData = [];
 
 document.addEventListener('DOMContentLoaded', async () => {
   try {
-    const user = await getCurrentUser();
-    if (!user) {
-      window.location.href = '/login.html';
-      return;
-    }
-
-    // استرجاع معلومات المستخدم من URL
-    const params = new URLSearchParams(window.location.search);
-    const userEmail = params.get('email');
-    const userName = params.get('name');
-
-    // ملء معلومات ولي الأمر
-    if (userName) {
-      document.getElementById('guardianName').value = userName;
-    }
-    if (userEmail) {
-      document.getElementById('contact-email').value = userEmail;
-      document.getElementById('use-account-email').checked = true;
-    }
+    // جلب بيانات ipapi
+    // const ipData = await getIpapiData();
+    // userCountry = ipData ? ipData.country_code : null;
+    userCountry = 'eg';
 
     await Promise.all([
-      loadCountries(),
-      loadPricingData(),
-      initializeLocationServices(),
-      initializeDateFields()
+      // loadCountries()
     ]);
 
-    // Set the account email
-    const accountEmailInput = document.getElementById('account-email');
-    accountEmailInput.value = user.email;
+    if (userCountry) {
+      const countrySelect = document.getElementById('country-select') || document.getElementById('residence-country-select') || document.getElementById('guardian-residence-country-select');
+      countrySelect.value = userCountry.toLowerCase();
 
-    // Welcome message
-    document.getElementById('welcome-message').textContent = `مرحباً ${user.email}`;
+      // إضافة مستمع الأحداث لعدم إمكانية تغيير الدولة
+      // countrySelect.addEventListener('change', () => {
+      //   countrySelect.value = userCountry.toLowerCase();
+      // });
+
+      // تهيئة intl-tel-input
+      iti = await initialIntlTelInput('guardian-phone-input', 'ar', userCountry.toLowerCase());
+    }
 
     // Initialize form submission
     document.getElementById('children-registration-form').addEventListener('submit', handleSubmit);
 
-    // Initialize relationship type change handler
-    const relationshipSelect = document.getElementById('relationship-select');
-    relationshipSelect.addEventListener('change', () => {
-      const otherContainer = document.getElementById('other-relationship-container');
-      const otherInput = document.getElementById('other-relationship-input');
-      otherContainer.style.display = relationshipSelect.value === 'other' ? 'block' : 'none';
-      otherInput.required = relationshipSelect.value === 'other';
-    });
-
-    // Initialize child forms
-    initializeChildrenContainer();
+    addChild();
   } catch (error) {
     handleError(error);
   }
 });
 
-function initializeChildrenContainer() {
-  // Add first child form if none exists
-  const childrenContainer = document.getElementById('children-container');
-  if (childrenContainer.children.length === 0) {
-    addChild();
-  }
-
-  // Initialize add child button
-  document.getElementById('add-child').addEventListener('click', () => {
-    addChild();
-    updatePricing();
-  });
-}
-
-function addChild() {
-  const childrenContainer = document.getElementById('children-container');
-  const childCount = childrenContainer.children.length + 1;
-
-  const childDiv = document.createElement('div');
-  childDiv.className = 'child-form';
-  childDiv.dataset.childIndex = childCount;
-
-  // إنشاء نموذج الطفل
-  childDiv.innerHTML = `
-        <h4>الطفل ${childCount}</h4>
-        <button type="button" class="remove-child" onclick="removeChildForm(this)">حذف الطفل ${childCount}</button>
-        <div class="form-group">
-            <label for="child-name-${childCount}">اسم الطفل:</label>
-            <input type="text" id="child-name-${childCount}" name="children[${childCount - 1}].name" required 
-                   minlength="3" maxlength="50" pattern="^[\u0600-\u06FF\s]{3,}$" 
-                   title="يرجى إدخال الاسم باللغة العربية (3 أحرف على الأقل)">
-        </div>
-        
-        <div class="form-group">
-            <label for="child-birthdate-${childCount}">تاريخ الميلاد:</label>
-            <input type="date" id="child-birthdate-${childCount}" name="children[${childCount - 1}].birthDate" required>
-            <small class="note">يجب أن يكون عمر الطفل بين ${MIN_AGE} و ${MAX_AGE} سنة</small>
-        </div>
-
-        <div class="form-group">
-            <label for="child-gender-${childCount}">النوع:</label>
-            <select id="child-gender-${childCount}" name="children[${childCount - 1}].gender" required>
-                <option value="">اختر النوع</option>
-                <option value="male">ذكر</option>
-                <option value="female">أنثى</option>
-            </select>
-        </div>
-
-        <div class="study-program">
-            <h4>البرنامج الدراسي</h4>
-            <div class="form-group">
-                <label for="child-subject-${childCount}">المادة:</label>
-                <select id="child-subject-${childCount}" name="children[${childCount - 1}].subject" required>
-                    <option value="">اختر المادة</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="child-department-${childCount}">القسم:</label>
-                <select id="child-department-${childCount}" name="children[${childCount - 1}].department" required>
-                    <option value="">اختر القسم</option>
-                </select>
-            </div>
-
-            <div class="form-group">
-                <label for="child-sessions-${childCount}">عدد الحصص الشهرية:</label>
-                <select id="child-sessions-${childCount}" name="children[${childCount - 1}].sessions" required>
-                    <option value="">اختر عدد الحصص</option>
-                </select>
-            </div>
-
-            <div id="child-pricing-${childCount}" class="pricing-details" style="display: none;">
-                <p>مدة الحصة: <span class="session-duration"></span> دقيقة</p>
-                <p>السعر الشهري: <span class="program-price"></span></p>
-            </div>
-        </div>
-    `;
-
-  childrenContainer.appendChild(childDiv);
-  setChildDateConstraints(document.getElementById(`child-birthdate-${childCount}`));
-
-  // تحديد حدود تاريخ الميلاد
-  const birthdateInput = document.getElementById(`child-birthdate-${childCount}`);
-  const today = new Date();
-  const maxDate = new Date();
-  const minDate = new Date();
-
-  maxDate.setFullYear(today.getFullYear() - MIN_AGE);
-  minDate.setFullYear(today.getFullYear() - MAX_AGE);
-
-  birthdateInput.max = maxDate.toISOString().split('T')[0];
-  birthdateInput.min = minDate.toISOString().split('T')[0];
-
-  // إعداد قوائم البرنامج الدراسي
-  const subjectSelect = document.getElementById(`child-subject-${childCount}`);
-  const departmentSelect = document.getElementById(`child-department-${childCount}`);
-  const sessionsSelect = document.getElementById(`child-sessions-${childCount}`);
-
-  // تحديث الأقسام عند اختيار المادة
-  subjectSelect.addEventListener('change', () => {
-    const selectedSubject = pricingData.subjects.find(s => s.id === subjectSelect.value);
-    if (selectedSubject) {
-      departmentSelect.innerHTML = '<option value="">اختر القسم</option>';
-      selectedSubject.departments.forEach(dept => {
-        const option = document.createElement('option');
-        option.value = dept.id;
-        option.textContent = dept.name;
-        departmentSelect.appendChild(option);
-      });
-    }
-  });
-
-  // تحديث عدد الحصص عند اختيار القسم
-  departmentSelect.addEventListener('change', () => {
-    const selectedSubject = pricingData.subjects.find(s => s.id === subjectSelect.value);
-    const selectedDept = selectedSubject?.departments.find(d => d.id === departmentSelect.value);
-
-    if (selectedDept) {
-      sessionsSelect.innerHTML = '<option value="">اختر عدد الحصص</option>';
-      selectedDept.sessions.forEach(session => {
-        const option = document.createElement('option');
-        option.value = session.count;
-        option.textContent = `${session.count} حصة شهرياً`;
-        sessionsSelect.appendChild(option);
-      });
-    }
-  });
-
-  // تحديث السعر عند اختيار عدد الحصص
-  sessionsSelect.addEventListener('change', async () => {
-    const selectedSubject = pricingData.subjects.find(s => s.id === subjectSelect.value);
-    const selectedDept = selectedSubject?.departments.find(d => d.id === departmentSelect.value);
-    const selectedSession = selectedDept?.sessions.find(s => s.count === parseInt(sessionsSelect.value));
-
-    if (selectedSession) {
-      const pricingDetails = document.getElementById(`child-pricing-${childCount}`);
-      const sessionDuration = pricingDetails.querySelector('.session-duration');
-      const programPrice = pricingDetails.querySelector('.program-price');
-
-      sessionDuration.textContent = selectedSession.duration;
-
-      const countryCode = document.getElementById('country').value;
-      const convertedPrice = await formatPriceForCountry(selectedSession.priceEGP, countryCode);
-      programPrice.textContent = convertedPrice;
-
-      if (countryCode !== 'EG') {
-        const priceNote = document.createElement('p');
-        priceNote.className = 'pricing-note';
-        priceNote.textContent = 'السعر محول حسب معدل القوة الشرائية وفقاً لبيانات البنك الدولي';
-        pricingDetails.appendChild(priceNote);
-      }
-
-      pricingDetails.style.display = 'block';
-    }
-  });
-
-  // ملء قائمة المواد
-  pricingData.subjects.forEach(subject => {
-    const option = document.createElement('option');
-    option.value = subject.id;
-    option.textContent = subject.name;
-    subjectSelect.appendChild(option);
-  });
-}
-
-window.removeChildForm = function (button) {
-  try {
-    const childForm = button.closest('.child-form');
-    const childrenContainer = document.getElementById('children-container');
-
-    if (childrenContainer.children.length <= 1) {
-      errorService.showErrorMessage('لا يمكن حذف الطفل الوحيد. يجب أن يكون هناك طفل واحد على الأقل.');
-      return;
-    }
-
-    childForm.remove();
-
-    // Renumber remaining children
-    const childForms = document.querySelectorAll('.child-form');
-    childForms.forEach((form, index) => {
-      const childNumber = index + 1;
-      form.dataset.childIndex = childNumber;
-
-      // Update title and remove button
-      const titleElement = form.querySelector('h5');
-      const removeButton = form.querySelector('.remove-child');
-      if (titleElement) titleElement.textContent = `الطفل ${childNumber}`;
-      if (removeButton) removeButton.textContent = `حذف الطفل ${childNumber}`;
-
-      // Update field IDs and names
-      ['name', 'gender', 'birthdate'].forEach(field => {
-        const element = form.querySelector(`[id^=child-${field}]`);
-        if (element) {
-          element.id = `child-${field}-${childNumber}`;
-          element.name = `children[${index}].${field}`;
-        }
-      });
-    });
-
-    // Update pricing after removing a child
-    updatePricing();
-  } catch (error) {
-    errorService.showErrorMessage('حدث خطأ أثناء محاولة حذف الطفل');
-  }
-};
-
-function initializeDateFields() {
-  const today = new Date();
-
-  // Calculate date constraints
-  const minChildDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-  const maxChildDate = new Date(today.getFullYear() - 4, today.getMonth(), today.getDate());
-  const minAdultDate = new Date(today.getFullYear() - 100, today.getMonth(), today.getDate());
-  const maxAdultDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-
-  // Set guardian date constraints
-  const guardianBirthDate = document.getElementById('guardianBirthDate');
-  if (guardianBirthDate) {
-    guardianBirthDate.min = minAdultDate.toISOString().split('T')[0];
-    guardianBirthDate.max = maxAdultDate.toISOString().split('T')[0];
-  }
-
-  // Set child date constraints for first child
-  const firstChildBirthDate = document.getElementById('child-birthdate-1');
-  if (firstChildBirthDate) {
-    setChildDateConstraints(firstChildBirthDate);
-  }
-}
-
-function setChildDateConstraints(childBirthdateInput) {
-  const today = new Date();
-  const minChildDate = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
-  const maxChildDate = new Date(today.getFullYear() - 4, today.getMonth(), today.getDate());
-
-  childBirthdateInput.min = minChildDate.toISOString().split('T')[0];
-  childBirthdateInput.max = maxChildDate.toISOString().split('T')[0];
-}
-
 async function loadCountries() {
   try {
-    const countrySelect = document.getElementById('country');
+    const nationalitySelect = document.getElementById('nationality-select');
+    const countrySelect = document.getElementById('residence-country-select');
     const response = await fetch('countries.json');
     const countries = await response.json();
 
+    // Sort countries alphabetically
     countries.sort((a, b) => a.name.localeCompare(b.name));
+
+    // Add options to country select
     countries.forEach(country => {
       const option = document.createElement('option');
       option.value = country.code.toLowerCase();
       option.textContent = country.name;
-      countrySelect.appendChild(option);
+      nationalitySelect.appendChild(option);
+      countrySelect.appendChild(option.cloneNode(true));
     });
-
-    countrySelect.addEventListener('change', updatePricing);
   } catch (error) {
     handleError('حدث خطأ في تحميل قائمة الدول: ' + error.message);
   }
 }
 
-async function loadPricingData() {
-  try {
-    const response = await fetch('/pricing.json');
-    pricingData = await response.json();
-    initializeProgramFields();
-  } catch (error) {
-    handleError('خطأ في تحميل بيانات التسعير');
-  }
+let childCount = 0;
+
+window.addChild = function () {
+  const container = document.getElementById("children-container");
+
+  const childId = generateChildId();
+  const childNumber = container.children.length + 1;
+
+  const childDiv = document.createElement("div");
+  childDiv.className = "child-box";
+  childDiv.dataset.childId = childId;
+
+  childDiv.innerHTML = `
+        <h3>طفل رقم ${childNumber}</h3>
+
+        <div class="form-group">
+          <label for="${childId}_name">اسم الطفل:</label>
+          <input type="text" id="${childId}_name" name="${childId}_name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="${childId}_gender">النوع:</label>
+          <select id="${childId}_gender" name="${childId}_gender" required>
+            <option value="">اختر</option>
+            <option value="male">ذكر</option>
+            <option value="female">أنثى</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <div id="${childId}-birthdate-container"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="${childId}_package">الباقة:</label>
+          <select id="${childId}_package" name="${childId}_package" required>
+            <option value="">-- جاري تحميل الباقات... --</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="${childId}_sessionDuration">مدة الحصة:</label>
+          <select id="${childId}_sessionDuration" name="${childId}_sessionDuration" required>
+            <option value="">-- اختر الباقة أولًا --</option>
+          </select>
+        </div>
+
+        <button type="button" class="delete-child-btn">
+          حذف الطفل ${childNumber}
+        </button>
+      `;
+
+  container.appendChild(childDiv);
+
+  // الأحداث
+  setupChildEvents(childDiv, childId);
+
+  // تحميل البيانات
+  loadPackages(childId);
+  createBirthdateDropdown(`${childId}-birthdate-container`, childId, 7, 17);
+};
+
+function generateChildId() {
+  return `child_${Date.now()}_${Math.random().toString(16).slice(2, 6)}`;
 }
 
-function calculateMultiChildDiscount(childrenCount) {
-  if (childrenCount <= 1) return 0;
-  const discounts = pricingData.multiChildDiscount;
-  if (childrenCount >= 5) return discounts['5+'];
-  return discounts[childrenCount.toString()] || 0;
+function setupChildEvents(childDiv, childId) {
+  const deleteBtn = childDiv.querySelector(".delete-child-btn");
+
+  deleteBtn.addEventListener("click", () => {
+    childDiv.remove();
+    updateChildNumbers();
+  });
+
+  const packageSelect = childDiv.querySelector(`#${childId}_package`);
+
+  packageSelect.addEventListener("change", () => {
+    updateDurations(childId, packageSelect.value);
+  });
 }
 
-async function updatePricing() {
-  const subjectKey = document.getElementById('subject').value;
-  const departmentKey = document.getElementById('department').value;
-  const sessionCount = document.getElementById('sessions').value;
-  const countryCode = document.getElementById('country').value?.toUpperCase();
-  const pricingDetails = document.getElementById('pricing-details');
-  const childrenCount = document.getElementById('children-container').children.length;
+function updateChildNumbers() {
+  const children = document.querySelectorAll(".child-box");
 
-  if (!subjectKey || !departmentKey || !sessionCount || !countryCode) {
-    pricingDetails.style.display = 'none';
-    return;
-  }
+  children.forEach((childDiv, index) => {
+    const number = index + 1;
 
-  try {
-    const basePrice = pricingData.base_prices[departmentKey][sessionCount];
-    const sessionDuration = pricingData.subjects[subjectKey].departments[departmentKey].session_duration;
-    const discountPercentage = calculateMultiChildDiscount(childrenCount);
+    childDiv.querySelector("h3").textContent = `طفل رقم ${index + 1}`;
+    childDiv.querySelector(".delete-child-btn").textContent = `حذف الطفل ${number}`;
+  });
+}
 
-    let finalPrice = basePrice;
-    if (discountPercentage > 0) {
-      finalPrice = basePrice * (1 - discountPercentage / 100);
-    }
+async function loadPackages(childId) {
+  const packageSelect = document.getElementById(`${childId}_package`);
 
-    const formattedPrice = await formatPriceForCountry(finalPrice, countryCode);
+  const res = await fetch("/data/packages.json");
+  packagesData = await res.json();
 
-    document.getElementById('session-duration').textContent = sessionDuration;
-    document.getElementById('program-price').textContent = formattedPrice;
+  packageSelect.innerHTML = '<option value="">-- اختر الباقة --</option>';
 
-    const discountElement = document.getElementById('multi-child-discount');
-    if (discountElement) {
-      if (discountPercentage > 0) {
-        discountElement.textContent = `خصم ${discountPercentage}% على كل طفل للتسجيل المتعدد`;
-        discountElement.style.display = 'block';
-      } else {
-        discountElement.style.display = 'none';
-      }
-    }
+  packagesData.forEach(pkg => {
+    const option = document.createElement("option");
+    option.value = pkg.id;
+    option.textContent = pkg.name;
+    packageSelect.appendChild(option);
+  });
+}
 
-    pricingDetails.style.display = 'block';
-  } catch (error) {
-    console.error('خطأ في حساب السعر:', error);
-    errorService.showErrorMessage('حدث خطأ في حساب السعر. يرجى المحاولة مرة أخرى لاحقاً.');
-    pricingDetails.style.display = 'none';
-  }
+function updateDurations(childId, packageId) {
+  const durationSelect = document.getElementById(`${childId}_sessionDuration`);
+  durationSelect.innerHTML = '<option value="">-- اختر الباقة أولًا --</option>';
+
+  const selectedPackage = packagesData.find(p => p.id === packageId);
+  if (!selectedPackage) return;
+
+  durationSelect.innerHTML = '<option value="">-- اختر مدة الحصة --</option>';
+
+  selectedPackage.durations.forEach(async d => {
+    const durationPrice = d.price;
+    const formattedPrice = await formatPriceForCountry(durationPrice, userCountry);
+    const option = document.createElement("option");
+    option.value = d.value;
+    option.textContent = `${d.label} - ${formattedPrice}`;
+    option.dataset.price = d.price;
+
+    durationSelect.appendChild(option);
+  });
 }
 
 async function handleSubmit(event) {
   event.preventDefault();
 
-  const form = event.target;
-  const formData = new FormData(form);
-
-  // Collect children data
-  const children = [];
-  const childForms = document.querySelectorAll('.child-form');
-  childForms.forEach((childForm, index) => {
-    children.push({
-      name: formData.get(`children[${index}].name`),
-      gender: formData.get(`children[${index}].gender`),
-      birthDate: formData.get(`children[${index}].birthDate`)
-    });
-  });
-
-  const profileData = {
-    userType: 'guardian',
-    guardian: {
-      name: formData.get('guardianName'),
-      gender: formData.get('guardianGender'),
-      birthDate: formData.get('guardianBirthDate'),
-      relationship: formData.get('relationship'),
-      otherRelationship: formData.get('otherRelationship')
-    },
-    children: children,
-    country: formData.get('country'),
-    location: formData.get('location'),
-    contactEmail: formData.get('contact-email'),
-    contactPhone: formData.get('contact-phone'),
-    preferredClassPlatform: formData.get('preferred-class-platform')
-  };
-
   try {
-    document.getElementById('loader').style.display = 'block';
-    await updateUserProfile(profileData);
-    window.location.href = '/profile.html';
+    const form = event.target;
+    const formData = new FormData(form);
+
+    const guardianData = {
+      name: formData.get("guardianName"),
+      gender: formData.get("guardianGender"),
+      birthDate: `${document.getElementById("guardian_year").value}-${document.getElementById("guardian_month").value}-${document.getElementById("guardian_day").value}`,
+      relationship: formData.get("relationship"),
+      otherRelationship: formData.get("otherRelationship"),
+      nationality: formData.get("nationality"),
+      residence: formData.get("residenceCountry"),
+      phone: iti.getNumber(),
+      email: formData.get("email")
+    };
+
+    const childrenData = [];
+
+    document.querySelectorAll(".child-box").forEach(childDiv => {
+      const childId = childDiv.dataset.childId;
+      const childData = {
+        name: formData.get(`${childId}_name`),
+        gender: formData.get(`${childId}_gender`),
+        birthDate: `${document.getElementById(`${childId}_year`).value}-${document.getElementById(`${childId}_month`).value}-${document.getElementById(`${childId}_day`).value}`,
+        package: formData.get(`${childId}_package`),
+        sessionDuration: formData.get(`${childId}_sessionDuration`),
+        price: document.getElementById(`${childId}_sessionDuration`).selectedOptions[0].dataset.price
+      };
+      childrenData.push(childData);
+    });
+
+    const data = {
+      type: "children",
+      guardian: guardianData,
+      children: childrenData,
+      notes: formData.get("notes"),
+      termsAccepted: formData.get("agree-terms") === "on"
+    };
+
+    // حذف الحقول غير الضرورية
+    if (data.guardian.relationship !== "other") {
+      delete data.guardian.otherRelationship;
+    }
+    if (!data.guardian.email) {
+      delete data.guardian.email;
+    }
+    if (!data.notes) {
+      delete data.notes;
+    }
+
+    const response = await fetch("/.netlify/functions/submitRegistration", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data)
+    });
+
+    if (response.ok) {
+
+      try {
+        const messageHtml = await buildFinalEmail(data);
+
+        const response = await emailjs.send(
+          "service_hh25ffv",
+          "template_sgaro9y", {
+          message_html: messageHtml
+        });
+
+        console.log("Email sent:", response.status);
+
+        // =========================
+        // 6️⃣ نجاح الإرسال
+        // =========================
+        alert("تم التسجيل بنجاح 🌿 سيتم التواصل معك قريبًا");
+
+        form.reset();
+
+      } catch (error) {
+        console.error("EmailJS Error:", error);
+        alert("حدث خطأ أثناء التسجيل، حاول مرة أخرى لاحقًا");
+      }
+
+    } else {
+      const errorText = await response.text();
+      throw new Error(`فشل التسجيل: ${errorText}`);
+    }
+
   } catch (error) {
     handleError(error);
-  } finally {
-    document.getElementById('loader').style.display = 'none';
   }
 }
 
-// دالة للحصول على دولة المستخدم
-async function getUserCountry() {
-  try {
-    const response = await fetch('https://ipapi.co/json/');
-    const data = await response.json();
-    return data.country_code;
-  } catch (error) {
-    console.error('خطأ في تحديد الدولة:', error);
-    return 'EG'; // الدولة الافتراضية
-  }
+async function loadEmailTemplate() {
+  const response = await fetch("/email-templates/children-registration.html");
+  const template = await response.text();
+  return template;
+}
+
+function fillTemplate(template, data) {
+  return template.replace(/{{(.*?)}}/g, (_, key) => {
+    return data[key.trim()] ?? "";
+  });
+}
+
+function buildChildrenHtml(children) {
+  return children.map((child, index) => `
+    <div style="margin-bottom: 12px;">
+      <strong>👶 الطفل ${index + 1}:</strong><br>
+      الاسم: ${child.name}<br>
+      النوع: ${child.gender === "male" ? "ذكر" : "أنثى"}<br>
+      تاريخ الميلاد: ${new Date(child.birthDate).toLocaleDateString("ar-EG")}<br>
+      الباقة: ${child.package}<br>
+      مدة الحصة: ${child.sessionDuration} دقيقة<br>
+      السعر: ${child.price} جنيه
+    </div>
+  `).join("");
+}
+
+async function buildFinalEmail(data) {
+  const template = await loadEmailTemplate();
+
+  const childrenHtml = buildChildrenHtml(data.children);
+
+  const finalHtml = fillTemplate(template, {
+    name: data.guardian.name,
+    gender: data.guardian.gender === "male" ? "ذكر" : "أنثى",
+    birthDate: new Date(data.guardian.birthDate).toLocaleDateString("ar-EG"),
+    relationship: data.guardian.relationship === "other"
+      ? data.guardian.otherRelationship
+      : data.guardian.relationship,
+    nationality: data.guardian.nationality,
+    residence: data.guardian.residence,
+    phone: data.guardian.phone,
+    email: data.guardian.email || "لا يوجد",
+    notes: data.notes || "لا يوجد",
+
+    childrenHtml: childrenHtml
+  });
+
+  return finalHtml;
 }

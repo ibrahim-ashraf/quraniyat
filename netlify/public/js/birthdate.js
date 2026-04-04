@@ -1,4 +1,4 @@
-async function createBirthdateDropdown(containerId, minAge = 5, maxAge = 100) {
+async function createBirthdateDropdown(containerId, prefix, minAge = 5, maxAge = 80) {
   const container = document.getElementById(containerId);
   if (!container) return;
 
@@ -11,16 +11,35 @@ async function createBirthdateDropdown(containerId, minAge = 5, maxAge = 100) {
     if (!res.ok) throw new Error("فشل تحميل نموذج تاريخ الميلاد");
     const html = await res.text();
     container.innerHTML = html;
-    yearSelect = container.querySelector("#birth-year-select");
-    monthSelect = container.querySelector("#birth-month-select");
-    daySelect = container.querySelector("#birth-day-select");
+
+    yearSelect = container.querySelector(".birth-year-select");
+    monthSelect = container.querySelector(".birth-month-select");
+    daySelect = container.querySelector(".birth-day-select");
+
+    yearSelect.name = `${prefix}_year`;
+    monthSelect.name = `${prefix}_month`;
+    daySelect.name = `${prefix}_day`;
+
+    yearSelect.id = `${prefix}_year`;
+    monthSelect.id = `${prefix}_month`;
+    daySelect.id = `${prefix}_day`;
+
+    container.querySelectorAll(".form-group").forEach(group => {
+      const label = group.querySelector("label");
+      const select = group.querySelector("select");
+
+      if (label && select) {
+        label.setAttribute("for", select.id);
+      }
+    });
   } catch (err) {
     console.error(err);
+    return;
   }
 
   const today = new Date();
   const currentYear = today.getFullYear();
-  const currentMonth = today.getMonth() + 1; // 1-based
+  const currentMonth = today.getMonth() + 1;
   const currentDay = today.getDate();
 
   const maxYear = currentYear - minAge;

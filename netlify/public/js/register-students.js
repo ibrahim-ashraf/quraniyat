@@ -122,7 +122,7 @@ async function handleSubmit(event) {
       type: 'students',
       name: formData.get("name"),
       gender: formData.get("gender"),
-      birthDate: `${document.getElementById("birth-year-select").value}-${document.getElementById("birth-month-select").value}-${document.getElementById("birth-day-select").value}`,
+      birthDate: `${document.getElementById("adult_year").value}-${document.getElementById("adult_month").value}-${document.getElementById("adult_day").value}`,
       nationality: formData.get("nationality"),
       residence: formData.get("residence"),
       phone: iti.getNumber(),
@@ -130,10 +130,19 @@ async function handleSubmit(event) {
       package: formData.get("package"),
       sessionDuration: formData.get("sessionDuration"),
       price: document.getElementById("session-duration-select").selectedOptions[0].dataset.price || null,
-      notes: formData.get("notes")
+      notes: formData.get("notes"),
+      termsAccepted: formData.get("agree-terms") === "on"
     };
-    console.log("Submitting data:", data);
-    const response = await fetch("/.netlify/functions/register", {
+
+    // حذف الحقول غير الضرورية
+    if (!data.email) {
+      delete data.email;
+    }
+    if (!data.notes) {
+      delete data.notes;
+    }
+
+    const response = await fetch("/.netlify/functions/submitRegistration", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(data)
@@ -142,10 +151,13 @@ async function handleSubmit(event) {
     if (response.ok) {
 
       try {
+        const messageHtml = await buildFinalEmail(data);
+
         const response = await emailjs.send(
           "service_hh25ffv",
-          "template_fnzdfrc",
-          data
+          "template_fnzdfrc", {
+          message_html: messageHtml
+        }
         );
 
         console.log("Email sent:", response.status);
@@ -170,4 +182,36 @@ async function handleSubmit(event) {
   } catch (error) {
     handleError(error);
   }
+}
+
+async function loadEmailTemplate() {
+  const response = await fetch("/email-templates/students-registration.html");
+  const template = await response.text();
+  return template;
+}
+
+function fillTemplate(template, data) {
+  return template.replace(/{{(.*?)}}/g, (_, key) => {
+    return data[key.trim()] ?? "";
+  });
+}
+
+async function buildFinalEmail(data) {
+  const template = await loadEmailTemplate();
+
+  const finalHtml = fillTemplate(template, {
+    name: data.name,
+    gender: data.gender === "male" ? "ذكر" : "أنثى",
+    birthDate: new Date(data.birthDate).toLocaleDateString("ar-EG"),
+    nationality: data.nationality,
+    residence: data.residence,
+    phone: data.phone,
+    email: data.email || "لا يوجد",
+    package: data.package,
+    sessionDuration: data.sessionDuration,
+    price: data.price,
+    notes: data.notes || "لا يوجد"
+  });
+
+  return finalHtml;
 }
